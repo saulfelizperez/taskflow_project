@@ -1,103 +1,122 @@
 :root {
   --primary-color: #2f3de0;
-  --secondary-color: #f4f4f4;
-  --sidebar-color: #d8a8a8;
-  --text-color: #222;
-  --badge-high: #7b2ff7;
-  --badge-medium: #9333ea;
+  --background-color: #000000;
+  --sidebar-color: #2c29d3;
+  --card-color: #c6b9b9;
+  --text-color: #bf2222;
+  --badge-gradient: linear-gradient(135deg, #6a11cb, #8e2de2);
 
-  --font-main: Arial, sans-serif;
-  --spacing: 20px;
-  --radius: 10px;
+  --spacing: 24px;
+  --radius: 16px;
+  --max-width: 1100px;
 }
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  font-family: var(--font-main);
-  background: var(--secondary-color);
+  font-family: Arial, sans-serif;
+  background: var(--background-color);
   color: var(--text-color);
 }
 
+/* HEADER */
+
 header {
   text-align: center;
-  padding: var(--spacing);
-  font-size: 28px;
+  padding: 30px 0;
+}
+
+header h1 {
   color: var(--primary-color);
 }
 
+/* MAIN LAYOUT */
+
 main {
+  max-width: var(--max-width);
+  margin: auto;
   display: flex;
   gap: var(--spacing);
   padding: var(--spacing);
 }
 
-/* Sidebar */
+/* SIDEBAR */
 
 .sidebar {
   background: var(--sidebar-color);
   padding: var(--spacing);
+  border-radius: var(--radius);
   width: 250px;
+}
+
+.sidebar h2 {
+  margin-bottom: 15px;
 }
 
 .sidebar ul {
   list-style: none;
-  margin-top: 15px;
 }
 
 .sidebar li {
   margin-bottom: 10px;
+  font-size: 18px;
 }
 
-/* Content */
+/* CONTENT */
 
 .content {
   flex: 1;
 }
 
+.content h2 {
+  margin-bottom: 20px;
+}
+
+/* TASK CARDS */
+
 .task {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #c8bbbb;
-  padding: 15px;
-  border-radius: var(--radius);
-  margin-bottom: 15px;
 
-  /* BONUS transición */
+  background: var(--card-color);
+  padding: 20px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
 
 .task:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .badge {
-  padding: 5px 10px;
-  border-radius: 20px;
+  padding: 8px 16px;
+  border-radius: 30px;
+  background: var(--badge-gradient);
   color: white;
-  font-size: 14px;
+  font-weight: bold;
 }
 
-.high {
-  background: var(--badge-high);
-}
-
-.medium {
-  background: var(--badge-medium);
-}
+/* Boton */
 
 button {
-  padding: 10px 15px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
   cursor: pointer;
+  margin-top: 10px;
 }
+
+/* Responsivo */
 
 @media (max-width: 768px) {
   main {
