@@ -1,74 +1,110 @@
 :root {
-    --primary-color: #283cf1;
-    --secondary-color: #ffffff;
-    --background-color: #000000;
-    --text-color: #ffffff;
+  --primary-color: #2f3de0;
+  --secondary-color: #f4f4f4;
+  --sidebar-color: #d8a8a8;
+  --text-color: #222;
+  --badge-high: #7b2ff7;
+  --badge-medium: #9333ea;
+
+  --font-main: Arial, sans-serif;
+  --spacing: 20px;
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    margin: 0;
-    font-family: Arial;
-    background: var(--bg);
+  font-family: var(--font-main);
+  background: var(--secondary-color);
+  color: var(--text-color);
 }
 
 header {
-    background: var(--primary);
-    color: rgb(47, 65, 231);
-    padding: 20px;
-    text-align: center;
+  text-align: center;
+  padding: var(--spacing);
+  font-size: 28px;
+  color: var(--primary-color);
 }
 
-.container {
-    display: flex;
+main {
+  display: flex;
+  gap: var(--spacing);
+  padding: var(--spacing);
 }
 
 /* Sidebar */
-aside {
-    width: 220px;
-    background: rgba(230, 185, 185, 0.974);
-    padding: 20px;
+
+.sidebar {
+  background: var(--sidebar-color);
+  padding: var(--spacing);
+  width: 250px;
 }
 
-/* Main */
-main {
-    flex: 1;
-    padding: 20px;
+.sidebar ul {
+  list-style: none;
+  margin-top: 15px;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+/* Content */
+
+.content {
+  flex: 1;
 }
 
 .task {
-    display: flex;
-    justify-content: space-between;
-    background: rgb(216, 204, 204);
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #c8bbbb;
+  padding: 15px;
+  border-radius: var(--radius);
+  margin-bottom: 15px;
+
+  /* BONUS transición */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-/* Badges */
+.task:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
 .badge {
-    padding: 5px 10px;
-    border-radius: 12px;
-    color: rgb(141, 20, 240);
-    font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  color: white;
+  font-size: 14px;
 }
 
 .high {
-    background: var(--high);
+  background: var(--badge-high);
 }
 
 .medium {
-    background: var(--medium);
+  background: var(--badge-medium);
 }
 
-/* Responsive */
+button {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
+  main {
+    flex-direction: column;
+  }
 
-    .container {
-        flex-direction: column;
-    }
-
-    aside {
-        width: 100%;
-    }
-
+  .sidebar {
+    width: 100%;
+  }
 }
