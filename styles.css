@@ -43,6 +43,15 @@ main {
   align-items: flex-start;
   gap: 40px;
   padding: 40px;
+
+  display: flex;
+    align-items: stretch;
+    
+  .sidebar,
+.content {
+    display: flex;
+    flex-direction: column;
+
 }
 
 /* SIDEBAR */
