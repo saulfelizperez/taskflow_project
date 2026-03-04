@@ -43,6 +43,7 @@ main {
   align-items: flex-start;
   gap: 40px;
   padding: 40px;
+  width=100%;
 }
 
 /* SIDEBAR */
