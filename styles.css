@@ -136,6 +136,16 @@ button {
   gap: 40px;
 }
 
+/* FOOTER */
+
+footer {
+  text-align: center;
+  padding: 30px;
+  background: var(--card-color);
+  color: white;
+  margin-top: auto;
+}
+
 
 /* Responsivo */
 
