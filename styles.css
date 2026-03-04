@@ -51,7 +51,7 @@ main {
   background: var(--sidebar-color);
   padding: var(--spacing);
   border-radius: var(--radius);
-  width: 250px;
+  width: 240px;
   flex-shrink: 0;
 }
 
@@ -79,6 +79,7 @@ main {
 
 .content {
   flex: 1;
+  width=100%;
 }
 
 .content h2 {
