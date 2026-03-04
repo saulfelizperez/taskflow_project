@@ -43,7 +43,7 @@ main {
   align-items: flex-start;
   gap: 40px;
   padding: 40px;
-  width=100%;
+  width: 100%;
 }
 
 /* SIDEBAR */
@@ -54,14 +54,9 @@ main {
   border-radius: var(--radius);
   width: 240px;
   flex-shrink: 0;
-}
-
-.sidebar,
- {
-  align-self: flex-start;
   height: fit-content;
+  align-self: flex-start;
 }
-
 
 .sidebar h2 {
   margin-bottom: 15px;
