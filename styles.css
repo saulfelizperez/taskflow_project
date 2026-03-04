@@ -1,6 +1,6 @@
 :root {
   --primary-color: #2f3de0;
-  --background-color: #ffffffd7;
+  --background-color: #ffffffc1;
   --sidebar-color: #000000;
   --card-color: #000000;
   --text-color: #0a1eff;
@@ -118,7 +118,7 @@ main {
 
 .task:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.24);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
 }
 
 .badge {
@@ -154,7 +154,6 @@ footer {
 /* RESPONSIVE */
 
 @media (max-width: 768px) {
-
   main {
     padding: 15px;
   }
@@ -166,5 +165,4 @@ footer {
   .sidebar {
     width: 100%;
   }
-
 }
