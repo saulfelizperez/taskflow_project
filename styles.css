@@ -39,12 +39,12 @@ header h1 {
 /* MAIN LAYOUT */
 
 main {
-   width: 100%;
+  width: 100%;
   display: flex;
   align-items: flex-start;
   gap: 30px;
-  padding: 20px 60px;
-  box-sizing: border-box;
+  padding: 20px 40px;
+  max-width: 100%;
 }
 
 /* SIDEBAR */
@@ -76,7 +76,7 @@ main {
 
 .content {
   flex: 1;
-  width: 100%;
+  min-width: 0;
 }
 
 .content h2 {
@@ -136,11 +136,6 @@ button {
   gap: 40px;
 }
 
-.container {
-  width: 100%;
-  max-width: 1400px;
-  margin: auto;
-}
 
 /* Responsivo */
 
