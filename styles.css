@@ -8,7 +8,6 @@
 
   --spacing: 24px;
   --radius: 16px;
-  --max-width: 1100px;
 }
 
 * {
@@ -21,8 +20,9 @@ body {
   font-family: Arial, sans-serif;
   background: var(--background-color);
   color: var(--text-color);
-  height: 100%;
-  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* HEADER */
@@ -41,10 +41,25 @@ header h1 {
 main {
   width: 100%;
   display: flex;
-  align-items: flex-start;
-  gap: 30px;
+  justify-content: center;
   padding: 20px;
-  max-width: 100%;
+}
+
+.main-wrapper {
+  width: 100%;
+  max-width: 1400px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* ROWS */
+
+.row {
+  display: flex;
+  gap: 40px;
+  width: 100%;
 }
 
 /* SIDEBAR */
@@ -53,10 +68,10 @@ main {
   background: var(--sidebar-color);
   padding: var(--spacing);
   border-radius: var(--radius);
+
   width: 240px;
   flex-shrink: 0;
   height: fit-content;
-  align-self: flex-start;
 }
 
 .sidebar h2 {
@@ -90,21 +105,20 @@ main {
   justify-content: space-between;
   align-items: center;
 
-  box-sizing: border-box;
+  width: 100%;
 
   background: var(--card-color);
-  padding: 20px;
+  padding: 18px 24px;
   border-radius: var(--radius);
+
   margin-bottom: 20px;
 
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .task:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.24);
 }
 
 .badge {
@@ -115,25 +129,16 @@ main {
   font-weight: bold;
 }
 
-/* Boton */
+/* BUTTON */
 
 button {
-  padding: 10px 20px;
+  padding: 12px 22px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   margin-top: 10px;
-}
-
-.layout {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-.row {
-  display: flex;
-  gap: 40px;
+  background: var(--primary-color);
+  color: rgb(0, 0, 0);
 }
 
 /* FOOTER */
@@ -146,15 +151,20 @@ footer {
   margin-top: auto;
 }
 
-
-/* Responsivo */
+/* RESPONSIVE */
 
 @media (max-width: 768px) {
+
   main {
+    padding: 15px;
+  }
+
+  .row {
     flex-direction: column;
   }
 
   .sidebar {
     width: 100%;
   }
+
 }
