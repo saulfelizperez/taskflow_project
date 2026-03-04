@@ -1,7 +1,7 @@
 :root {
   --primary-color: #2f3de0;
   --background-color: #ffffff;
-  --sidebar-color: #2c29d3;
+  --sidebar-color: #000000;
   --card-color: #000000;
   --text-color: #0a1eff;
   --badge-gradient: linear-gradient(135deg, #6a11cb, #8e2de2);
