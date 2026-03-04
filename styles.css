@@ -123,6 +123,17 @@ button {
   margin-top: 10px;
 }
 
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.row {
+  display: flex;
+  gap: 40px;
+}
+
 /* Responsivo */
 
 @media (max-width: 768px) {
