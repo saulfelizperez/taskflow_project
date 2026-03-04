@@ -2,96 +2,97 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-
     <title>Trading Info</title>
-
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
 
-<header>
-  <h1>Trading Info</h1>
-</header>
+    <header>
+      <h1>Trading Info</h1>
+    </header>
 
-<main>
+    <main>
+      <div class="main-wrapper">
 
-  <div class="main-wrapper">
+        <!-- SECTION 1 (DINÁMICA) -->
+        <div class="row">
 
-    <!-- SECTION 1 -->
-    <div class="row">
+          <aside class="sidebar">
+            <h2>Index</h2>
+            <ul>
+              <li>NAS100</li>
+              <li>SP500</li>
+              <li>DOW JONES</li>
+              <li>IBEX 35</li>
+            </ul>
+          </aside>
 
-      <aside class="sidebar">
-        <h2>Index</h2>
-        <ul>
-          <li>NAS100</li>
-          <li>SP500</li>
-          <li>DOW JONES</li>
-          <li>IBEX 35</li>
-        </ul>
-      </aside>
+          <section class="content">
 
-      <section class="content">
+            <h2>What is it for?</h2>
 
-        <h2>What is it for?</h2>
+            <!-- FORMULARIO -->
+            <form id="task-form">
+              <input 
+                type="text" 
+                id="task-input" 
+                placeholder="Add new task..." 
+                required
+              />
+              <button type="submit">Add</button>
+            </form>
 
-        <div class="task">
-          <span>Learning Trading Assets</span>
-          <span class="badge">1</span>
+            <!-- DINÁMICO -->
+            <div id="task-container"></div>
+
+          </section>
+
         </div>
 
-        <div class="task">
-          <span>Trading practice</span>
-          <span class="badge">2</span>
+        <hr>
+
+        <!-- SECTION 2 (ESTÁTICA) -->
+        <div class="row">
+
+          <aside class="sidebar">
+            <h2>Trading Tools</h2>
+            <ul>
+              <li>TradingView</li>
+              <li>MT5</li>
+              <li>EasyOrder</li>
+              <li>Trading Session Indicator</li>
+            </ul>
+          </aside>
+
+          <section class="content">
+
+            <h2>Trading Basics</h2>
+
+            <div class="task">
+              <span>Risk Management</span>
+              <span class="badge">1</span>
+            </div>
+
+            <div class="task">
+              <span>Technical Analysis</span>
+              <span class="badge">2</span>
+            </div>
+
+          </section>
+
         </div>
 
-      </section>
+        <button>Continue</button>
 
-    </div>
+      </div>
+    </main>
 
-    <hr>
+    <footer>
+      <p>© My project, 2026 Trading Info. All rights reserved.</p>
+      <p>contact@tradinginfo.com</p>
+    </footer>
 
-    <!-- SECTION 2 -->
-    <div class="row">
-
-      <aside class="sidebar">
-        <h2>Trading Tools</h2>
-        <ul>
-          <li>TradingView</li>
-          <li>MT5</li>
-          <li>EasyOrder</li>
-          <li>Trading Session Indicator</li>
-        </ul>
-      </aside>
-
-      <section class="content">
-
-        <h2>Trading Basics</h2>
-
-        <div class="task">
-          <span>Risk Management</span>
-          <span class="badge">1</span>
-        </div>
-
-        <div class="task">
-          <span>Technical Analysis</span>
-          <span class="badge">2</span>
-        </div>
-
-      </section>
-
-    </div>
-
-    <button>Continue</button>
-
-  </div>
-
-</main>
-
-<footer>
-  <p>© My project, 2026 Trading Info. All rights reserved.</p>
-  <p>contact@tradinginfo.com</p>
-</footer>
-
-</body>
+    <script src="app.js"></script>
+  </body>
 </html>
