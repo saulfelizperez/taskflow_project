@@ -1,26 +1,28 @@
 ﻿<!doctype html>
-<html lang="es">
+<html lang="es" class="h-full">
   <head>
     <meta charset="UTF-8" />
     <title>Trading Info</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link href="./dist/styles.css" rel="stylesheet" />
   </head>
 
-  <body>
-
-    <header>
-      <h1>Trading Info</h1>
+  <body
+    class="h-full bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300"
+  >
+    <header class="p-6 bg-white dark:bg-gray-800 shadow">
+      <h1 class="text-3xl font-bold text-center">Trading Info</h1>
     </header>
 
-    <main>
-      <div class="main-wrapper">
+    <main class="p-8 max-w-6xl mx-auto">
+      <div class="space-y-12">
+        <!-- SECTION 1 -->
+        <div class="grid md:grid-cols-[250px_1fr] gap-6 items-start">
+          <aside
+            class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg h-fit"
+          >
+            <h2 class="text-xl font-semibold mb-4">Index</h2>
 
-        <!-- SECTION 1 (DINÁMICA) -->
-        <div class="row">
-
-          <aside class="sidebar">
-            <h2>Index</h2>
-            <ul>
+            <ul class="space-y-2 text-gray-600 dark:text-gray-300">
               <li>NAS100</li>
               <li>SP500</li>
               <li>DOW JONES</li>
@@ -28,36 +30,41 @@
             </ul>
           </aside>
 
-          <section class="content">
+          <section class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+            <h2 class="text-xl font-semibold mb-6">What is it for?</h2>
 
-            <h2>What is it for?</h2>
-
-            <!-- FORMULARIO -->
-            <form id="task-form">
-              <input 
-                type="text" 
-                id="task-input" 
-                placeholder="Write a new index" 
+            <!-- FORM -->
+            <form id="task-form" class="flex gap-3 mb-6">
+              <input
+                type="text"
+                id="task-input"
+                placeholder="Write a new index"
                 required
+                class="flex-1 p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 outline-none transition"
               />
-              <button type="submit">Add up</button>
+
+              <button
+                type="submit"
+                class="px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition"
+              >
+                Add up
+              </button>
             </form>
 
-            <!-- DINÁMICO -->
-            <div id="task-container"></div>
-
+            <div id="task-container" class="space-y-3"></div>
           </section>
-
         </div>
 
-        <hr>
+        <hr class="border-gray-300 dark:border-gray-700" />
 
-        <!-- SECTION 2 (ESTÁTICA) -->
-        <div class="row">
+        <!-- SECTION 2 -->
+        <div class="grid md:grid-cols-[250px_1fr] gap-6">
+          <aside
+            class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg h-fit"
+          >
+            <h2 class="text-xl font-semibold mb-4">Trading Tools</h2>
 
-          <aside class="sidebar">
-            <h2>Trading Tools</h2>
-            <ul>
+            <ul class="space-y-2 text-gray-600 dark:text-gray-300">
               <li>TradingView</li>
               <li>MT5</li>
               <li>EasyOrder</li>
@@ -65,34 +72,65 @@
             </ul>
           </aside>
 
-          <section class="content">
+          <section class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+            <h2 class="text-xl font-semibold mb-6">Trading Basics</h2>
 
-            <h2>Trading Basics</h2>
+            <div class="space-y-4">
+              <div
+                class="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition"
+              >
+                <span>Risk Management</span>
+                <span
+                  class="px-3 py-1 bg-blue-600 text-white rounded-full text-sm"
+                  >1</span
+                >
+              </div>
 
-            <div class="task">
-              <span>Risk Management</span>
-              <span class="badge">1</span>
+              <div
+                class="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition"
+              >
+                <span>Technical Analysis</span>
+                <span
+                  class="px-3 py-1 bg-blue-600 text-white rounded-full text-sm"
+                  >2</span
+                >
+              </div>
             </div>
-
-            <div class="task">
-              <span>Technical Analysis</span>
-              <span class="badge">2</span>
-            </div>
-
           </section>
-
         </div>
 
-        <button>Continue</button>
-
+        <button
+          class="w-full py-4 bg-green-600 text-white rounded-xl text-lg font-semibold hover:bg-green-700 transition"
+        >
+          Continue
+        </button>
       </div>
     </main>
 
-    <footer>
+    <footer
+      class="mt-12 p-6 text-center text-sm text-gray-500 dark:text-gray-400"
+    >
       <p>© My project, 2026 Trading Info. All rights reserved.</p>
       <p>contact@tradinginfo.com</p>
     </footer>
 
-    <script src="app.js"></script>
+    <!-- Theme Toggle -->
+    <div class="fixed bottom-6 right-6">
+      <button
+        id="themeToggle"
+        class="px-5 py-3 bg-blue-600 text-white rounded-full shadow-lg hover:scale-105 transition"
+      >
+        🌙 Toggle Dark Mode
+      </button>
+    </div>
+
+    <script>
+      const button = document.getElementById("themeToggle");
+
+      button.addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+      });
+    </script>
   </body>
+  <div class="grid md:grid-cols-[240px_1fr] gap-10"></div>
 </html>

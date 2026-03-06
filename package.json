@@ -1,0 +1,4 @@
+{"name":"practicas","version":"1.0.0","description":"Practice project developed in DAM","main":"app.js",
+  "scripts": {
+  "dev": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --watch"
+},"keywords":[],"author":"","license":"ISC","type":"commonjs","devDependencies":{"@tailwindcss/postcss":"^4.2.1","autoprefixer":"^10.4.27","postcss":"^8.5.8","tailwindcss":"^3.4.19"},"dependencies":{"postcss-cli":"^11.0.1"}}
