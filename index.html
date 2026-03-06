@@ -1,136 +1,144 @@
 ﻿<!doctype html>
-<html lang="es" class="h-full">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Trading Info</title>
-    <link href="./dist/styles.css" rel="stylesheet" />
+    <title>Trading Knowledge</title>
+
+    <!-- ===== CARGA TEMA OSCURO Y TAILWIND ===== -->
+    <script>
+      // Aplica dark mode si estaba guardado
+      if (localStorage.getItem("theme") === "dark") {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Configuración de Tailwind
+      tailwind = {
+        darkMode: "class",
+      };
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
   <body
-    class="h-full bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300"
+    class="bg-white text-black dark:bg-slate-900 dark:text-white transition-colors duration-300"
   >
-    <header class="p-6 bg-white dark:bg-gray-800 shadow">
-      <h1 class="text-3xl font-bold text-center">Trading Info</h1>
-    </header>
+    <div class="flex min-h-screen p-8 gap-6">
+      <!-- SIDEBAR -->
+      <div class="w-64 space-y-6">
+        <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
+          <h2 class="text-lg font-semibold mb-4">Index</h2>
+          <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+            <li>NAS100</li>
+            <li>SP500</li>
+            <li>DOW JONES</li>
+            <li>IBEX 35</li>
+          </ul>
+        </div>
 
-    <main class="p-8 max-w-6xl mx-auto">
-      <div class="space-y-12">
-        <!-- SECTION 1 -->
-        <div class="grid md:grid-cols-[250px_1fr] gap-6 items-start">
-          <aside
-            class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg h-fit"
+        <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
+          <h2 class="text-lg font-semibold mb-4">Trading Tools</h2>
+          <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+            <li>TradingView</li>
+            <li>MT5</li>
+            <li>EasyOrder</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- MAIN -->
+      <div class="flex-1 space-y-8">
+        <!-- INPUT CARD -->
+        <div
+          class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow flex gap-4 items-center"
+        >
+          <div class="flex-1">
+            <h2 class="text-lg font-semibold mb-2">What is it for?</h2>
+            <input
+              id="taskInput"
+              type="text"
+              placeholder="Write a new index"
+              class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700"
+            />
+          </div>
+
+          <button
+            id="addButton"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg"
           >
-            <h2 class="text-xl font-semibold mb-4">Index</h2>
-
-            <ul class="space-y-2 text-gray-600 dark:text-gray-300">
-              <li>NAS100</li>
-              <li>SP500</li>
-              <li>DOW JONES</li>
-              <li>IBEX 35</li>
-            </ul>
-          </aside>
-
-          <section class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-semibold mb-6">What is it for?</h2>
-
-            <!-- FORM -->
-            <form id="task-form" class="flex gap-3 mb-6">
-              <input
-                type="text"
-                id="task-input"
-                placeholder="Write a new index"
-                required
-                class="flex-1 p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 outline-none transition"
-              />
-
-              <button
-                type="submit"
-                class="px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition"
-              >
-                Add up
-              </button>
-            </form>
-
-            <div id="task-container" class="space-y-3"></div>
-          </section>
+            Add up
+          </button>
         </div>
 
         <hr class="border-gray-300 dark:border-gray-700" />
 
-        <!-- SECTION 2 -->
-        <div class="grid md:grid-cols-[250px_1fr] gap-6">
-          <aside
-            class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg h-fit"
-          >
-            <h2 class="text-xl font-semibold mb-4">Trading Tools</h2>
+        <!-- LIST -->
+        <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
+          <h2 class="text-xl font-semibold mb-6">Trading Basics</h2>
 
-            <ul class="space-y-2 text-gray-600 dark:text-gray-300">
-              <li>TradingView</li>
-              <li>MT5</li>
-              <li>EasyOrder</li>
-              <li>Trading Session Indicator</li>
-            </ul>
-          </aside>
-
-          <section class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-semibold mb-6">Trading Basics</h2>
-
-            <div class="space-y-4">
-              <div
-                class="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition"
+          <div id="list" class="space-y-4">
+            <div
+              class="flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg"
+            >
+              <span>Risk Management</span>
+              <span
+                class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full"
+                >1</span
               >
-                <span>Risk Management</span>
-                <span
-                  class="px-3 py-1 bg-blue-600 text-white rounded-full text-sm"
-                  >1</span
-                >
-              </div>
-
-              <div
-                class="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition"
-              >
-                <span>Technical Analysis</span>
-                <span
-                  class="px-3 py-1 bg-blue-600 text-white rounded-full text-sm"
-                  >2</span
-                >
-              </div>
             </div>
-          </section>
+
+            <div
+              class="flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg"
+            >
+              <span>Technical Analysis</span>
+              <span
+                class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full"
+                >2</span
+              >
+            </div>
+          </div>
         </div>
-
-        <button
-          class="w-full py-4 bg-green-600 text-white rounded-xl text-lg font-semibold hover:bg-green-700 transition"
-        >
-          Continue
-        </button>
       </div>
-    </main>
-
-    <footer
-      class="mt-12 p-6 text-center text-sm text-gray-500 dark:text-gray-400"
-    >
-      <p>© My project, 2026 Trading Info. All rights reserved.</p>
-      <p>contact@tradinginfo.com</p>
-    </footer>
-
-    <!-- Theme Toggle -->
-    <div class="fixed bottom-6 right-6">
-      <button
-        id="themeToggle"
-        class="px-5 py-3 bg-blue-600 text-white rounded-full shadow-lg hover:scale-105 transition"
-      >
-        🌙 Toggle Dark Mode
-      </button>
     </div>
 
-    <script>
-      const button = document.getElementById("themeToggle");
+    <!-- THEME BUTTON -->
+    <button
+      onclick="toggleTheme()"
+      class="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg"
+    >
+      🌙 Toggle Theme
+    </button>
 
-      button.addEventListener("click", () => {
-        document.documentElement.classList.toggle("dark");
+    <script>
+      /* ===== THEME TOGGLE ===== */
+      function toggleTheme() {
+        const html = document.documentElement;
+
+        if (html.classList.contains("dark")) {
+          html.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        } else {
+          html.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        }
+      }
+
+      /* ===== TASK SYSTEM ===== */
+      const input = document.getElementById("taskInput");
+      const addButton = document.getElementById("addButton");
+      const list = document.getElementById("list");
+
+      addButton.addEventListener("click", () => {
+        const text = input.value.trim();
+        if (!text) return;
+
+        const item = document.createElement("div");
+        item.className =
+          "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg mt-2";
+        item.innerHTML = `<span>${text}</span><span>•</span>`;
+        list.appendChild(item);
+        input.value = "";
       });
     </script>
   </body>
-  <div class="grid md:grid-cols-[240px_1fr] gap-10"></div>
 </html>
