@@ -2,22 +2,18 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trading Knowledge</title>
 
-    <!-- ===== CARGA TEMA OSCURO Y TAILWIND ===== -->
+    <!-- CSS compilado de Tailwind -->
+    <link rel="stylesheet" href="./dist/styles.css" />
+
+    <!-- Cargar tema guardado antes de renderizar -->
     <script>
-      // Aplica dark mode si estaba guardado
       if (localStorage.getItem("theme") === "dark") {
         document.documentElement.classList.add("dark");
       }
-
-      // Configuración de Tailwind
-      tailwind = {
-        darkMode: "class",
-      };
     </script>
-
-    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
   <body
@@ -54,6 +50,7 @@
         >
           <div class="flex-1">
             <h2 class="text-lg font-semibold mb-2">What is it for?</h2>
+
             <input
               id="taskInput"
               type="text"
@@ -101,7 +98,7 @@
       </div>
     </div>
 
-    <!-- THEME BUTTON -->
+    <!-- BOTÓN DARK MODE -->
     <button
       onclick="toggleTheme()"
       class="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg"
@@ -109,8 +106,9 @@
       🌙 Toggle Theme
     </button>
 
+    <!-- SCRIPT JS -->
     <script>
-      /* ===== THEME TOGGLE ===== */
+      /* ===== TOGGLE THEME ===== */
       function toggleTheme() {
         const html = document.documentElement;
 
@@ -135,7 +133,12 @@
         const item = document.createElement("div");
         item.className =
           "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg mt-2";
-        item.innerHTML = `<span>${text}</span><span>•</span>`;
+
+        item.innerHTML = `
+        <span>${text}</span>
+        <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full">•</span>
+      `;
+
         list.appendChild(item);
         input.value = "";
       });

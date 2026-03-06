@@ -1,15 +1,11 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html", "./src/**/*.{html,js}"],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
-
-export default {
   darkMode: "class",
 
-  content: ["./index.html", "./src/**/*.{js,html}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{html,js}"
+  ],
 
   theme: {
     extend: {
@@ -21,8 +17,7 @@ export default {
       },
 
       backgroundImage: {
-        "badge-gradient":
-          "linear-gradient(135deg,#6a11cb,#8e2de2)"
+        "badge-gradient": "linear-gradient(135deg,#6a11cb,#8e2de2)"
       },
 
       spacing: {
@@ -35,4 +30,5 @@ export default {
     }
   },
 
-  plugins: []}
+  plugins: [],
+}
