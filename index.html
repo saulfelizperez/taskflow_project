@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trading Knowledge</title>
 
-    <!-- CSS compilado de Tailwind -->
     <link rel="stylesheet" href="./dist/styles.css" />
 
-    <!-- Cargar tema guardado antes de renderizar -->
     <script>
-      if (localStorage.getItem("theme") === "dark") {
+      // Cargar tema guardado
+      if (
+        localStorage.getItem("theme") === "dark" ||
+        (!localStorage.getItem("theme") &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
         document.documentElement.classList.add("dark");
       }
     </script>
@@ -44,7 +47,7 @@
 
       <!-- MAIN -->
       <div class="flex-1 space-y-8">
-        <!-- INPUT CARD -->
+        <!-- INPUT -->
         <div
           class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow flex gap-4 items-center"
         >
@@ -83,7 +86,6 @@
                 >1</span
               >
             </div>
-
             <div
               class="flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg"
             >
@@ -106,12 +108,10 @@
       🌙 Toggle Theme
     </button>
 
-    <!-- SCRIPT JS -->
     <script>
-      /* ===== TOGGLE THEME ===== */
+      /* ===== DARK MODE ===== */
       function toggleTheme() {
         const html = document.documentElement;
-
         if (html.classList.contains("dark")) {
           html.classList.remove("dark");
           localStorage.setItem("theme", "light");
@@ -126,22 +126,64 @@
       const addButton = document.getElementById("addButton");
       const list = document.getElementById("list");
 
-      addButton.addEventListener("click", () => {
+      // 1️⃣ Leer tareas desde localStorage
+      let tasks = JSON.parse(localStorage.getItem("tasks"));
+
+      // 2️⃣ Si no hay tareas guardadas, tomar las que ya están en el HTML
+      if (!tasks || tasks.length === 0) {
+        tasks = Array.from(list.children).map(
+          (item) => item.querySelector("span").textContent,
+        );
+        saveTasks();
+      }
+
+      // Guardar tareas en localStorage
+      function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      // Renderizar tareas
+      function renderTasks() {
+        list.innerHTML = "";
+        tasks.forEach((task, index) => {
+          const item = document.createElement("div");
+          item.className =
+            "flex justify-between items-center p-4 bg-gray-200 dark:bg-slate-700 rounded-lg";
+
+          item.innerHTML = `
+      <span>${task}</span>
+      <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Delete</button>
+    `;
+
+          const deleteBtn = item.querySelector("button");
+          deleteBtn.addEventListener("click", () => {
+            tasks.splice(index, 1);
+            saveTasks();
+            renderTasks();
+          });
+
+          list.appendChild(item);
+        });
+      }
+
+      // Añadir tarea
+      function addTask() {
         const text = input.value.trim();
         if (!text) return;
-
-        const item = document.createElement("div");
-        item.className =
-          "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg mt-2";
-
-        item.innerHTML = `
-        <span>${text}</span>
-        <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full">•</span>
-      `;
-
-        list.appendChild(item);
+        tasks.push(text);
+        saveTasks();
+        renderTasks();
         input.value = "";
+      }
+
+      // Eventos
+      addButton.addEventListener("click", addTask);
+      input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") addTask();
       });
+
+      // Render inicial
+      renderTasks();
     </script>
   </body>
 </html>
