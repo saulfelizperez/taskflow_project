@@ -1,12 +1,12 @@
 # Diferencias entre AIs
 
-## Comparacion de AIs
+## Comparación de AIs
 
 Este documento se enfocara en informar las ventajas y desventajas que tiene cada AI entre ellas, ayudando a poder utilizar dichas AIs abogando a sus ventajas.
 
-### Comparacion entre Chatgpt y Claude
+### Comparación entre ChatGPT y Claude
 
-### 1. ¿Que significa hacer un commit y como hacerlo con Git?
+### 1. ¿Qué significa hacer un commit y cómo hacerlo con Git?
 
 **Claridad**
 
@@ -92,7 +92,7 @@ Una vez que hayas agregado los archivos, ejecuta el comando git commit -m "Mensa
 Ejemplo: Code git add index.html style.css
 git commit -m "Agrega estilos CSS y estructura HTML básica"Cuando haces un commit, Git crea una instantánea de los archivos en ese momento y le asigna un identificador único (hash) a ese punto en la historia del proyecto. Esto te permite volver a esa versión específica más adelante si es necesario.Los commits son la unidad fundamental de registro de cambios en Git. Deben ser realizados con frecuencia y con mensajes claros y descriptivos para mantener un historial de desarrollo ordenado y útil.
 
-### 2. ¿Que significa Consolo.ReadLine(); en C# y para que sirve?
+### 2. ¿Qué significa Console.ReadLine(); en C# y para qué sirve?
 
 **Claridad**
 
@@ -160,7 +160,7 @@ string nombre = Console.ReadLine();
 Console.WriteLine($"Hola, {nombre}!");Recopilar información de depuración o pruebas: Puede ser útil para solicitar información al usuario durante el desarrollo o pruebas del programa.Ejemplo: Code Console.Write("Presiona Enter para continuar...");
 Console.ReadLine();Interacción en consolas de aplicaciones de línea de comandos: En aplicaciones de consola, Console.ReadLine() permite que el usuario interactúe con el programa y proporcione entradas.En resumen, Console.ReadLine() es una herramienta fundamental en C# para obtener datos de entrada del usuario a través de la consola, lo que permite crear programas más interactivos y adaptables a las necesidades del usuario.
 
-### 3. ¿Que significa crear un repositorio local y para con sirve (Con Git)?
+### 3. ¿Qué significa crear un repositorio local y para qué sirve (con Git)?
 
 **Claridad**
 
@@ -230,7 +230,7 @@ Navegar hasta la carpeta donde quieres crear el repositorio.
 Ejecutar el comando git init. Esto crea un directorio oculto llamado .git que contiene todos los archivos y metadatos necesarios para el control de versiones.
 El propósito de crear un repositorio local es:Llevar un registro de los cambios realizados en los archivos del proyecto a lo largo del tiempo.Poder revertir a versiones anteriores si es necesario.Colaborar con otros desarrolladores en el mismo proyecto.Sincronizar el código con un repositorio remoto (como GitHub, GitLab, etc.) para tener copias de seguridad y facilitar el trabajo en equipo.En resumen, el repositorio local es la base fundamental para utilizar Git como sistema de control de versiones en tu proyecto de desarrollo de software. Te permite gestionar eficientemente los cambios en tus archivos a nivel local antes de compartirlos con un equipo o subirlos a un repositorio remoto.
 
-## Funciones js
+## Funciones en JavaScript
 
 **_Prompt General_**
 
@@ -415,7 +415,7 @@ const esPar = num => num % 2 === 0;
 
 Ahora, la función cumple su misión: devuelve true si el número es par, y false si es impar.
 
-## Implementacion de AI
+## Implementación de IA
 
 **_Prompt general_**
 
@@ -537,7 +537,7 @@ let miTexto = "La luna brilla en el cielo";
 console.log(contienepalabra(miTexto, "luna"));
 // Salida: true La función contienepalabra() toma dos parámetros: texto y palabra. Utiliza el método includes() de los strings para comprobar si la palabra se encuentra dentro del texto. Si la palabra está presente, la función devuelve true, de lo contrario, devuelve false.El método includes() es una forma sencilla de realizar esta comprobación. Devuelve true si el string contiene la subcadena especificada, y false en caso contrario.Recuerda que soy un asistente de IA y no un especialista certificado. Mis respuestas se generan mediante algoritmos de inteligencia artificial.
 
-## Analisis General AI
+## Análisis general de AIs
 
 _CHATGPT_
 

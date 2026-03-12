@@ -1,6 +1,6 @@
-#  Prueba y Error
+# Prueba y error
 
-## Documentacion 
+## Documentación 
 
-Este documento se enfocara en almacenar los datos necesarios de los resultados de pruebas y la diferencia entre sus caracteristicas.
-
+Este documento se enfocará en almacenar los datos necesarios de los resultados de pruebas y la diferencia entre sus características.
+ 
