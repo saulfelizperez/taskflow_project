@@ -136,27 +136,24 @@
 
         // --- State helpers ---
         function loadTasks() {
-          let storedTasks = null;
-          try {
-            storedTasks = JSON.parse(localStorage.getItem("tasks"));
-            if (!Array.isArray(storedTasks)) storedTasks = null;
-          } catch (error) {
-            storedTasks = null;
-          }
-
-          if (storedTasks && storedTasks.length > 0) {
-            return storedTasks;
-          }
+          const stored = safeParseArray(localStorage.getItem("tasks"));
+          if (stored.length) return stored;
 
           const tasksFromDom = Array.from(taskListElement.children)
-            .map((taskElement) => {
-              const label = taskElement.querySelector("span");
-              return label ? label.textContent.trim() : null;
-            })
+            .map((taskElement) => taskElement.querySelector("span")?.textContent?.trim())
             .filter(Boolean);
 
           saveTasks(tasksFromDom);
           return tasksFromDom;
+        }
+
+        function safeParseArray(raw) {
+          try {
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : [];
+          } catch {
+            return [];
+          }
         }
 
         function saveTasks(updatedTasks) {
@@ -165,14 +162,6 @@
         }
 
         // --- UI render helpers ---
-        function createEmptyStateElement() {
-          const emptyStateElement = document.createElement("div");
-          emptyStateElement.className =
-            "text-gray-400 dark:text-gray-500 py-6 text-center";
-          emptyStateElement.textContent = "No tasks found. Add your first topic!";
-          return emptyStateElement;
-        }
-
         function createTaskElement(taskLabel, index) {
           const taskContainer = document.createElement("div");
           taskContainer.className =
@@ -202,7 +191,9 @@
           taskListElement.innerHTML = "";
 
           if (!taskItems || taskItems.length === 0) {
-            taskListElement.appendChild(createEmptyStateElement());
+            taskListElement.appendChild(
+              createMessageElement("No tasks found. Add your first topic!")
+            );
             return;
           }
 
@@ -210,6 +201,14 @@
             const taskElement = createTaskElement(taskLabel, index);
             taskListElement.appendChild(taskElement);
           });
+        }
+
+        function createMessageElement(messageText) {
+          const messageElement = document.createElement("div");
+          messageElement.className =
+            "text-gray-400 dark:text-gray-500 py-6 text-center";
+          messageElement.textContent = messageText;
+          return messageElement;
         }
 
         // --- Input / events ---
