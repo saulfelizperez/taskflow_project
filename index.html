@@ -118,6 +118,10 @@
 
     <script>
       /* ===== DARK MODE ===== */
+      /**
+       * Toggle the current color theme between light and dark.
+       * Persists the selected mode in localStorage under the "theme" key.
+       */
       function toggleTheme() {
         const htmlElement = document.documentElement;
         const isDarkModeEnabled = htmlElement.classList.toggle("dark");
@@ -135,6 +139,12 @@
         let taskItems = loadTasks();
 
         // --- State helpers ---
+        /**
+         * Load tasks from localStorage or, if empty, from the initial DOM.
+         * Also persists DOM-derived tasks into localStorage the first time.
+         *
+         * @returns {string[]} Array of task labels.
+         */
         function loadTasks() {
           const stored = safeParseArray(localStorage.getItem("tasks"));
           if (stored.length) return stored;
@@ -147,6 +157,12 @@
           return tasksFromDom;
         }
 
+        /**
+         * Safely parse a JSON string as an array.
+         *
+         * @param {string|null} raw - Raw JSON content from storage.
+         * @returns {any[]} Parsed array or an empty array on failure.
+         */
         function safeParseArray(raw) {
           try {
             const parsed = JSON.parse(raw);
@@ -156,12 +172,25 @@
           }
         }
 
+        /**
+         * Update in-memory tasks and persist them to localStorage.
+         *
+         * @param {string[]} updatedTasks - New list of task labels.
+         */
         function saveTasks(updatedTasks) {
           taskItems = updatedTasks;
           localStorage.setItem("tasks", JSON.stringify(taskItems));
         }
 
         // --- UI render helpers ---
+        /**
+         * Create a DOM element representing a single task row, including
+         * its delete button and associated click handler.
+         *
+         * @param {string} taskLabel - Text to display for the task.
+         * @param {number} index - Index of the task in the current list.
+         * @returns {HTMLDivElement} Configured task container element.
+         */
         function createTaskElement(taskLabel, index) {
           const taskContainer = document.createElement("div");
           taskContainer.className =
@@ -187,6 +216,10 @@
           return taskContainer;
         }
 
+        /**
+         * Render the current list of tasks into the DOM,
+         * or show an empty-state message when there are none.
+         */
         function renderTasks() {
           taskListElement.innerHTML = "";
 
@@ -203,6 +236,13 @@
           });
         }
 
+        /**
+         * Create a reusable message element to show within the task list,
+         * e.g. an empty-state message.
+         *
+         * @param {string} messageText - Message to be displayed.
+         * @returns {HTMLDivElement} Message container element.
+         */
         function createMessageElement(messageText) {
           const messageElement = document.createElement("div");
           messageElement.className =
@@ -212,6 +252,10 @@
         }
 
         // --- Input / events ---
+        /**
+         * Read, validate and add a new task from the text input.
+         * Shows inline validation feedback when the value is not acceptable.
+         */
         function addTaskFromInput() {
           const newTaskLabel = taskInputElement.value.trim();
 
@@ -269,6 +313,15 @@
           taskInputElement.value = "";
         }
 
+        /**
+         * Display a temporary validation state on the task input.
+         *
+         * @param {Object} options - Validation configuration.
+         * @param {"error"|"warning"} options.type - Visual style to apply.
+         * @param {string} options.placeholder - Temporary placeholder text.
+         * @param {boolean} [options.clearValue=false] - Whether to clear the input value.
+         * @param {number} [options.durationMs=1400] - Duration for the visual feedback.
+         */
         function showValidationState({
           type,
           placeholder,
@@ -288,6 +341,11 @@
           }, durationMs);
         }
 
+        /**
+         * Register event handlers related to the task form:
+         * - Click on the "Add up" button.
+         * - Enter keypress on the input.
+         */
         function registerTaskEventHandlers() {
           addTaskButton.addEventListener("click", addTaskFromInput);
           taskInputElement.addEventListener("keypress", (event) => {
