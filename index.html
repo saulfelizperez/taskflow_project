@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -125,39 +125,42 @@
       }
 
       /* ===== TASK SYSTEM ===== */
-      // ⬛ Mejorado: Encapsulado en IIFE para limitar el scope global
       (function () {
         const input = document.getElementById("taskInput");
         const addButton = document.getElementById("addButton");
         const list = document.getElementById("list");
 
-        // Mejoras: validación de localStorage, safe fallback, y cifra de tareas únicas (opc)
-        // Leer tareas desde localStorage
-        let tasks;
-        try {
-          tasks = JSON.parse(localStorage.getItem("tasks"));
-          if (!Array.isArray(tasks)) tasks = null;
-        } catch (e) {
-          tasks = null;
-        }
+        let tasks = loadTasks();
 
-        // Si no hay tareas guardadas, tomar las que ya están en el HTML (mejora: único por texto)
-        if (!tasks || tasks.length === 0) {
-          tasks = Array.from(list.children)
+        function loadTasks() {
+          let stored = null;
+          try {
+            stored = JSON.parse(localStorage.getItem("tasks"));
+            if (!Array.isArray(stored)) stored = null;
+          } catch (e) {
+            stored = null;
+          }
+
+          if (stored && stored.length > 0) {
+            return stored;
+          }
+
+          const initialFromDom = Array.from(list.children)
             .map((item) => {
               const span = item.querySelector("span");
               return span ? span.textContent.trim() : null;
             })
             .filter(Boolean);
-          saveTasks();
+
+          saveTasks(initialFromDom);
+          return initialFromDom;
         }
 
-        // Guardar tareas en localStorage
-        function saveTasks() {
+        function saveTasks(newTasks) {
+          tasks = newTasks;
           localStorage.setItem("tasks", JSON.stringify(tasks));
         }
 
-        // Mejoras en render
         function renderTasks() {
           list.innerHTML = "";
           if (!tasks || tasks.length === 0) {
@@ -167,6 +170,7 @@
             list.appendChild(emptyMsg);
             return;
           }
+
           tasks.forEach((task, index) => {
             const item = document.createElement("div");
             item.className =
@@ -183,10 +187,9 @@
 
             const deleteBtn = item.querySelector("button");
             deleteBtn.addEventListener("click", () => {
-              // Confirmación opcional para evitar borrar sin querer
               if (confirm(`Delete "${task}"?`)) {
-                tasks.splice(index, 1);
-                saveTasks();
+                const updatedTasks = tasks.filter((_, i) => i !== index);
+                saveTasks(updatedTasks);
                 renderTasks();
               }
             });
@@ -195,8 +198,7 @@
           });
         }
 
-        // Añadir tarea - validación única y longitud mínima
-        function addTask() {
+        function addTaskFromInput() {
           const text = input.value.trim();
           if (!text) {
             input.classList.add("border-red-500");
@@ -207,6 +209,7 @@
             }, 1400);
             return;
           }
+
           if (tasks.includes(text)) {
             input.classList.add("border-yellow-500");
             input.value = "";
@@ -217,25 +220,26 @@
             }, 1400);
             return;
           }
-          tasks.push(text);
-          saveTasks();
+
+          const updatedTasks = [...tasks, text];
+          saveTasks(updatedTasks);
           renderTasks();
           input.value = "";
         }
 
-        // Evento click y enter para añadir tarea
-        addButton.addEventListener("click", addTask);
-        input.addEventListener("keypress", (e) => {
-          if ((e.key === "Enter" || e.keyCode === 13) && !e.shiftKey) {
-            addTask();
-          }
-        });
+        function setupTaskEventHandlers() {
+          addButton.addEventListener("click", addTaskFromInput);
+          input.addEventListener("keypress", (e) => {
+            if ((e.key === "Enter" || e.keyCode === 13) && !e.shiftKey) {
+              addTaskFromInput();
+            }
+          });
+        }
 
-        // Mejor UX: enfocar input al inicio
-        window.addEventListener("DOMContentLoaded", () => input.focus());
-
-        // Render inicial
         renderTasks();
+        setupTaskEventHandlers();
+
+        window.addEventListener("DOMContentLoaded", () => input.focus());
       })();
     </script>
   </body>
