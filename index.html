@@ -216,24 +216,51 @@
         function addTaskFromInput() {
           const newTaskLabel = taskInputElement.value.trim();
 
+          // Basic empty check
           if (!newTaskLabel) {
-            taskInputElement.classList.add("border-red-500");
-            taskInputElement.placeholder = "Please enter something!";
-            setTimeout(() => {
-              taskInputElement.classList.remove("border-red-500");
-              taskInputElement.placeholder = "Write a new index";
-            }, 1400);
+            showValidationState({
+              type: "error",
+              placeholder: "Please enter something!",
+            });
             return;
           }
 
-          if (taskItems.includes(newTaskLabel)) {
-            taskInputElement.classList.add("border-yellow-500");
-            taskInputElement.value = "";
-            taskInputElement.placeholder = "Already exists!";
-            setTimeout(() => {
-              taskInputElement.classList.remove("border-yellow-500");
-              taskInputElement.placeholder = "Write a new index";
-            }, 1400);
+          // Length constraints
+          if (newTaskLabel.length < 3) {
+            showValidationState({
+              type: "error",
+              placeholder: "At least 3 characters",
+            });
+            return;
+          }
+
+          if (newTaskLabel.length > 60) {
+            showValidationState({
+              type: "error",
+              placeholder: "Max 60 characters",
+            });
+            return;
+          }
+
+          // Only spaces / symbols not allowed
+          if (!/[a-zA-Z0-9]/.test(newTaskLabel)) {
+            showValidationState({
+              type: "error",
+              placeholder: "Use letters or numbers",
+            });
+            return;
+          }
+
+          // Prevent duplicates (case-insensitive)
+          const alreadyExists = taskItems.some(
+            (taskLabel) => taskLabel.toLowerCase() === newTaskLabel.toLowerCase()
+          );
+          if (alreadyExists) {
+            showValidationState({
+              type: "warning",
+              clearValue: true,
+              placeholder: "Already exists!",
+            });
             return;
           }
 
@@ -241,6 +268,25 @@
           saveTasks(updatedTasks);
           renderTasks();
           taskInputElement.value = "";
+        }
+
+        function showValidationState({
+          type,
+          placeholder,
+          clearValue = false,
+          durationMs = 1400,
+        }) {
+          const className =
+            type === "warning" ? "border-yellow-500" : "border-red-500";
+
+          taskInputElement.classList.add(className);
+          if (clearValue) taskInputElement.value = "";
+          taskInputElement.placeholder = placeholder;
+
+          setTimeout(() => {
+            taskInputElement.classList.remove(className);
+            taskInputElement.placeholder = "Write a new index";
+          }, durationMs);
         }
 
         function registerTaskEventHandlers() {
