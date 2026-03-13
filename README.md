@@ -23,7 +23,7 @@ Small practice project developed in DAM to experiment with a trading–themed in
 
 ### Requirements
 
-- **Node.js** (recommended v18+)
+- **Node.js** 
 - **npm** (comes with Node)
 
 ### Installation
