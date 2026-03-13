@@ -218,3 +218,50 @@ npm install -g @modelcontextprotocol/server-filesystem
 
 **Ejemplo**:  
 Si el código tiene escasez de comentarios o una estructura poco clara, puedes pedir a Cursor una explicación paso a paso de un archivo o función concreta, para acelerar tu comprensión antes de realizar cambios.
+
+
+## Los 10 prompts que me son más útiles
+
+- 🟦 **Explica esto de forma simple y con analogías**
+<!--Referente al tema que mejor entiendas o que más te guste-->
+Funciona bien, ya que las personas aprenden haciendo referencia a algo que ya conocen o que les gusta.
+
+- 🟩 **Resume este texto en los puntos más importantes, usa listas y explica cada punto brevemente**
+
+Te da los puntos más importantes del texto.
+
+- 🟪 **Analiza este código paso a paso. Explica qué hace cada parte y si hay errores o mejoras posibles.**
+
+Permite entender un código de una mejor manera y, al combinarlo con las explicaciones mediante analogías, funciona aún mejor.
+
+- 🟥 **Revisa este código y encuentra posibles bugs o problemas. Explica por qué ocurren y cómo solucionarlos.**
+
+Funciona bien, ya que como somos humanos, se nos puede escapar algo que no estamos viendo y que la IA puede terminar descubriendo, ahorrándonos tiempo y energía.
+
+- 🟧 **Refactoriza este código para que sea más limpio, eficiente y fácil de leer. Explica los cambios realizados.**
+
+Sirve para terminar de definir el código y comprender dichos cambios.
+
+- 🟨 **Enséñame este tema paso a paso, empieza desde lo básico y avanza hasta un nivel intermedio. Usa ejemplos simples.**
+
+Sirve para que te lo expliquen de la manera más sencilla posible, desde diferentes puntos de vista.
+
+- 🟫 **Genera 5 ejercicios para practicar este tema, empieza con uno fácil y aumenta la dificultad. No des las respuestas.**
+
+Esto es muy útil para poder practicar de la mejor manera.
+
+- ⬛ **Compara estos dos conceptos, explica sus diferencias, ventajas y cuándo usar cada uno.**
+
+Esto es muy bueno para desglosar conceptos y entenderlos de forma atómica.
+
+- 🟦 **Actúa como un experto en [tema], analiza el siguiente problema y explica la mejor solución paso a paso.**
+
+Sirve sobre todo si estás atascado en algo en concreto; puedes consultarlo y comparar opiniones con un "experto".
+
+- 🟩 **Dame los 3 ejemplos más importantes de este concepto, explícalos paso a paso.**
+
+Esto sirve como referencia importante sobre un concepto específico.
+
+- 🟦 **Antes de responder, piensa paso a paso y explica tu razonamiento.**
+
+Ayuda a evitar errores de parte de la IA.
