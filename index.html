@@ -6,19 +6,7 @@
     <title>Trading Knowledge</title>
 
     <link rel="stylesheet" href="./dist/styles.css" />
-
-    <script>
-      // ⬛ Mejorado: Funcionalidad para cargar tema guardado de manera más robusta
-      (function () {
-        const userTheme = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (userTheme === "dark" || (!userTheme && prefersDark)) {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      })();
-    </script>
+    <script src="./theme.js"></script>
   </head>
 
   <body
@@ -82,7 +70,12 @@
         <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
           <h2 class="text-xl font-semibold mb-6">Trading Basics</h2>
 
-          <div id="list" class="space-y-4">
+          <div
+            id="list"
+            class="space-y-4"
+            aria-label="Trading basics topic list"
+            aria-live="polite"
+          >
             <div
               class="flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg"
             >
@@ -103,31 +96,35 @@
             </div>
           </div>
         </div>
+
+        <!-- SIMPLE TRADING WIDGET -->
+        <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
+          <h2 class="text-xl font-semibold mb-4">Market Snapshot</h2>
+          <p class="text-gray-600 dark:text-gray-300 mb-3">
+            Static example widget to practice layout: imagine quick notes about
+            current volatility, trends or pairs you are watching.
+          </p>
+          <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-1">
+            <li>Check news before opening positions.</li>
+            <li>Avoid trading during high-impact events if unsure.</li>
+            <li>Review your risk per trade (1–2% max).</li>
+          </ul>
+        </div>
       </div>
     </div>
 
     <!-- BOTÓN DARK MODE -->
     <button
+      id="themeToggleButton"
       onclick="toggleTheme()"
       class="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg"
       type="button"
-      aria-label="Toggle Theme"
+      aria-label="Toggle theme"
     >
-      🌙 Toggle Theme
+      🌙 Dark Mode
     </button>
 
     <script>
-      /* ===== DARK MODE ===== */
-      /**
-       * Toggle the current color theme between light and dark.
-       * Persists the selected mode in localStorage under the "theme" key.
-       */
-      function toggleTheme() {
-        const htmlElement = document.documentElement;
-        const isDarkModeEnabled = htmlElement.classList.toggle("dark");
-        localStorage.setItem("theme", isDarkModeEnabled ? "dark" : "light");
-      }
-
       /* ===== TASK SYSTEM ===== */
       (function () {
         // DOM references
