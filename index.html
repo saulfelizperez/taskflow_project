@@ -98,20 +98,83 @@
         </div>
 
         <!-- SIMPLE TRADING WIDGET -->
-        <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
-          <h2 class="text-xl font-semibold mb-4">Psicotrading</h2>
-          <p class="text-gray-600 dark:text-gray-300 mb-3">
-            The next adivices will help to manage your own psychology
-          </p>
-          <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-1">
-            <li>Check and calm yourself 10 minutes before session starts</li>
-            <li>If you have a good day, stop trading and enjoy it</li>
-            <li>If you have a bad day, stop trading and reflect</li>
-            <li>If you are not sure about a trade, don't trade</li>
-            <li>Journal your trades and your feelings</li>
+        <div class="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-900 rounded-xl p-8 shadow-xl relative overflow-hidden psicotrading-widget">
+          <h2 class="text-2xl font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2">
+            <svg class="w-7 h-7 text-blue-400 dark:text-blue-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m2-4h.01"></path><circle cx="12" cy="12" r="10"></circle></svg>
+            Psicotrading
+          </h2>
+          <p class="text-gray-700 dark:text-blue-100 mb-3 italic">The next advices will help you to manage your own psychology:</p>
+          <ul id="psiTipsList" class="list-none space-y-2">
+            <li class="flex items-center group hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative">
+              <span class="rounded-full bg-green-400/20 text-green-600 dark:bg-green-800/40 dark:text-green-300 w-7 h-7 flex items-center justify-center mr-3 text-lg">🧘</span>
+              <span>Check and calm yourself 10 minutes before session starts</span>
+              <button class="ml-auto opacity-0 group-hover:opacity-100 transition px-2 py-1 text-xs bg-blue-600 text-white rounded shadow" onclick="removePsiTip(this)">Remove</button>
+            </li>
+            <li class="flex items-center group hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative">
+              <span class="rounded-full bg-yellow-400/20 text-yellow-600 dark:bg-yellow-800/40 dark:text-yellow-300 w-7 h-7 flex items-center justify-center mr-3 text-lg">😃</span>
+              <span>If you have a good day, stop trading and enjoy it</span>
+              <button class="ml-auto opacity-0 group-hover:opacity-100 transition px-2 py-1 text-xs bg-blue-600 text-white rounded shadow" onclick="removePsiTip(this)">Remove</button>
+            </li>
+            <li class="flex items-center group hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative">
+              <span class="rounded-full bg-red-400/20 text-red-600 dark:bg-red-800/40 dark:text-red-300 w-7 h-7 flex items-center justify-center mr-3 text-lg">😔</span>
+              <span>If you have a bad day, stop trading and reflect</span>
+              <button class="ml-auto opacity-0 group-hover:opacity-100 transition px-2 py-1 text-xs bg-blue-600 text-white rounded shadow" onclick="removePsiTip(this)">Remove</button>
+            </li>
+            <li class="flex items-center group hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative">
+              <span class="rounded-full bg-purple-400/20 text-purple-600 dark:bg-purple-800/40 dark:text-purple-300 w-7 h-7 flex items-center justify-center mr-3 text-lg">🤔</span>
+              <span>If you are not sure about a trade, don't trade</span>
+              <button class="ml-auto opacity-0 group-hover:opacity-100 transition px-2 py-1 text-xs bg-blue-600 text-white rounded shadow" onclick="removePsiTip(this)">Remove</button>
+            </li>
+            <li class="flex items-center group hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative">
+              <span class="rounded-full bg-indigo-400/20 text-indigo-600 dark:bg-indigo-800/40 dark:text-indigo-300 w-7 h-7 flex items-center justify-center mr-3 text-lg">📓</span>
+              <span>Journal your trades and your feelings</span>
+              <button class="ml-auto opacity-0 group-hover:opacity-100 transition px-2 py-1 text-xs bg-blue-600 text-white rounded shadow" onclick="removePsiTip(this)">Remove</button>
+            </li>
           </ul>
+          <form id="psiTipForm" class="flex mt-6 gap-3">
+            <input id="psiTipInput" type="text" placeholder="Add your own advice…" class="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition" maxlength="100" />
+            <button type="submit"
+              class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition"
+            >Add</button>
+          </form>
         </div>
-      </div>
+        <style>
+        .psicotrading-widget::after {
+          content: "";
+          position: absolute;
+          top: -40px; right: -40px;
+          width: 120px; height: 120px;
+          background: radial-gradient(circle, #a5b4fc80 40%, transparent 70%);
+          pointer-events: none;
+          z-index: 0;
+        }
+        </style>
+        <script>
+        // Psicotrading widget JS
+        function removePsiTip(btn) {
+          const li = btn.closest('li');
+          if(li) li.remove();
+        }
+        document.getElementById('psiTipForm').addEventListener('submit', function (e) {
+          e.preventDefault();
+          const input = document.getElementById('psiTipInput');
+          const val = input.value.trim();
+          if(!val) return;
+          const li = document.createElement('li');
+          li.className = 'flex items-center group hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative';
+          // Emoji default
+          const emojiList = ["💡","✨","😊","🚦","📝", "🧠", "✅", "🫡"];
+          const emoji = emojiList[Math.floor(Math.random()*emojiList.length)];
+          const colorClass = "bg-blue-400/20 text-blue-600 dark:bg-blue-800/40 dark:text-blue-300";
+          li.innerHTML = `
+            <span class="rounded-full ${colorClass} w-7 h-7 flex items-center justify-center mr-3 text-lg">${emoji}</span>
+            <span>${val}</span>
+            <button class="ml-auto opacity-0 group-hover:opacity-100 transition px-2 py-1 text-xs bg-blue-600 text-white rounded shadow" onclick="removePsiTip(this)">Remove</button>
+          `;
+          document.getElementById('psiTipsList').appendChild(li);
+          input.value = '';
+        });
+        </script>
     </div>
 
     <!-- BOTÓN DARK MODE -->
