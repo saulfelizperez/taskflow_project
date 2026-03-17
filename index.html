@@ -179,7 +179,7 @@
     <button
       id="themeToggleButton"
       onclick="toggleTheme()"
-      class="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg"
+      class="fixed bottom-12 right-8 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg"
       type="button"
       aria-label="Toggle theme"
     >
@@ -369,8 +369,8 @@
             return;
           }
 
-          // Only spaces / symbols not allowed
-          if (!/[a-zA-Z0-9]/.test(newTaskLabel)) {
+          // Only spaces / symbols not allowed (allow accented letters too)
+          if (!/[\p{L}\p{N}]/u.test(newTaskLabel)) {
             showValidationState({
               type: "error",
               placeholder: "Use letters or numbers",
