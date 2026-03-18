@@ -35,7 +35,7 @@
 
       <!-- MAIN -->
       <div class="flex-1 space-y-8">
-        <!-- INPUT -->
+        <!-- INPUT Y BOTONES -->
         <div
           class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow flex flex-col gap-3"
         >
@@ -53,7 +53,7 @@
             Add up
           </button>
 
-          <!-- NUEVO: búsqueda y filtros -->
+          <!-- Búsqueda y filtros -->
           <input
             id="searchInput"
             placeholder="Buscar..."
@@ -75,9 +75,16 @@
           >
             Completar todas
           </button>
+
+          <button
+            id="deleteCompletedBtn"
+            class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg mt-2"
+          >
+            Borrar completadas
+          </button>
         </div>
 
-        <!-- LIST -->
+        <!-- LISTA -->
         <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
           <h2 class="text-xl font-semibold mb-6">Trading Basics</h2>
           <div id="list" class="space-y-4"></div>
@@ -90,7 +97,7 @@
       let rawTasks = JSON.parse(localStorage.getItem("tasks")) || [];
       let tasks = rawTasks
         .map((t) => {
-          if (typeof t === "string") return { text: t, completed: false }; // tareas antiguas
+          if (typeof t === "string") return { text: t, completed: false };
           if (t && typeof t === "object")
             return { text: t.text || "", completed: !!t.completed };
           return null;
@@ -198,6 +205,11 @@
       document.getElementById("filterSelect").onchange = renderTasks;
       document.getElementById("completeAllBtn").onclick = () => {
         tasks.forEach((t) => (t.completed = true));
+        saveTasks();
+        renderTasks();
+      };
+      document.getElementById("deleteCompletedBtn").onclick = () => {
+        tasks = tasks.filter((t) => !t.completed);
         saveTasks();
         renderTasks();
       };
