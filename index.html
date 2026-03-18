@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trading Knowledge</title>
-
     <link rel="stylesheet" href="./dist/styles.css" />
     <script src="./theme.js"></script>
   </head>
@@ -24,7 +23,6 @@
             <li>IBEX 35</li>
           </ul>
         </div>
-
         <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
           <h2 class="text-lg font-semibold mb-4">Trading Tools</h2>
           <ul class="space-y-2 text-gray-600 dark:text-gray-300">
@@ -39,462 +37,173 @@
       <div class="flex-1 space-y-8">
         <!-- INPUT -->
         <div
-          class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow flex gap-4 items-end"
+          class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow flex flex-col gap-3"
         >
-          <div class="flex-1">
-            <h2 class="text-lg font-semibold mb-2">What is it for?</h2>
-
-            <input
-              id="taskInput"
-              type="text"
-              placeholder="Write a new index"
-              autocomplete="off"
-              class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700"
-              aria-label="Write a new index"
-            />
-          </div>
+          <input
+            id="taskInput"
+            type="text"
+            placeholder="Write a new index"
+            class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700"
+          />
 
           <button
             id="addButton"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg mb-[2px]"
-            type="button"
-            aria-label="Add up"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg"
           >
             Add up
           </button>
-        </div>
 
-        <hr class="border-gray-300 dark:border-gray-700" />
+          <!-- NUEVO: búsqueda y filtros -->
+          <input
+            id="searchInput"
+            placeholder="Buscar..."
+            class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700 mt-4"
+          />
+
+          <select
+            id="filterSelect"
+            class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700 mt-2"
+          >
+            <option value="all">Todas</option>
+            <option value="pending">Pendientes</option>
+            <option value="completed">Completadas</option>
+          </select>
+
+          <button
+            id="completeAllBtn"
+            class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg mt-2"
+          >
+            Completar todas
+          </button>
+        </div>
 
         <!-- LIST -->
         <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
           <h2 class="text-xl font-semibold mb-6">Trading Basics</h2>
-
-          <div
-            id="list"
-            class="space-y-4"
-            aria-label="Trading basics topic list"
-            aria-live="polite"
-          >
-            <div
-              class="flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg"
-            >
-              <span>Risk Management</span>
-              <span
-                class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full"
-                >1</span
-              >
-            </div>
-            <div
-              class="flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg"
-            >
-              <span>Technical Analysis</span>
-              <span
-                class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full"
-                >2</span
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- SIMPLE TRADING WIDGET -->
-        <div class="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-900 rounded-xl p-6 shadow-xl relative overflow-hidden psicotrading-widget">
-          <h2 class="text-lg font-semibold mb-3 text-blue-700 dark:text-blue-300 tracking-wide">
-            Psicotrading
-          </h2>
-          <p class="text-sm text-gray-700 dark:text-blue-100 mb-3 italic">
-            The next advices will help you to manage your own psychology:
-          </p>
-          <ul id="psiTipsList" class="list-none space-y-2">
-            <li data-locked="true" class="flex items-center hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative">
-              <span class="rounded-full bg-green-400/20 text-green-600 dark:bg-green-800/40 dark:text-green-300 w-7 h-7 flex items-center justify-center mr-3 text-lg">🧘</span>
-              <span>Check and calm yourself 10 minutes before session starts</span>
-            </li>
-            <li data-locked="true" class="flex items-center hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative">
-              <span class="rounded-full bg-yellow-400/20 text-yellow-600 dark:bg-yellow-800/40 dark:text-yellow-300 w-7 h-7 flex items-center justify-center mr-3 text-lg">😃</span>
-              <span>If you have a good day, stop trading and enjoy it</span>
-            </li>
-            <li data-locked="true" class="flex items-center hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative">
-              <span class="rounded-full bg-red-400/20 text-red-600 dark:bg-red-800/40 dark:text-red-300 w-7 h-7 flex items-center justify-center mr-3 text-lg">😔</span>
-              <span>If you have a bad day, stop trading and reflect</span>
-            </li>
-            <li data-locked="true" class="flex items-center hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative">
-              <span class="rounded-full bg-purple-400/20 text-purple-600 dark:bg-purple-800/40 dark:text-purple-300 w-7 h-7 flex items-center justify-center mr-3 text-lg">🤔</span>
-              <span>If you are not sure about a trade, don't trade</span>
-            </li>
-            <li data-locked="true" class="flex items-center hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative">
-              <span class="rounded-full bg-indigo-400/20 text-indigo-600 dark:bg-indigo-800/40 dark:text-indigo-300 w-7 h-7 flex items-center justify-center mr-3 text-lg">📓</span>
-              <span>Journal your trades and your feelings</span>
-            </li>
-          </ul>
-          <form id="psiTipForm" class="flex mt-6 gap-3">
-            <input id="psiTipInput" type="text" placeholder="Add your own advice…" class="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition" maxlength="100" />
-            <button type="submit"
-              class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition"
-            >Add</button>
-          </form>
-        </div>
-        <style>
-        .psicotrading-widget::after {
-          content: "";
-          position: absolute;
-          top: -40px; right: -40px;
-          width: 120px; height: 120px;
-          background: radial-gradient(circle, #a5b4fc80 40%, transparent 70%);
-          pointer-events: none;
-          z-index: 0;
-        }
-        </style>
-        <script>
-        // Psicotrading widget JS
-        function removePsiTip(btn) {
-          const li = btn.closest('li');
-          if (!li) return;
-          if (li.dataset.locked === "true") return;
-          li.remove();
-        }
-        document.getElementById('psiTipForm').addEventListener('submit', function (e) {
-          e.preventDefault();
-          const input = document.getElementById('psiTipInput');
-          const val = input.value.trim();
-          if(!val) return;
-          const li = document.createElement('li');
-          li.className = 'flex items-center group hover:bg-blue-50 dark:hover:bg-slate-700 transition rounded-lg px-3 py-2 cursor-pointer relative';
-          // Emoji default
-          const emojiList = ["💡","✨","😊","🚦","📝", "🧠", "✅", "🫡"];
-          const emoji = emojiList[Math.floor(Math.random()*emojiList.length)];
-          const colorClass = "bg-blue-400/20 text-blue-600 dark:bg-blue-800/40 dark:text-blue-300";
-          li.innerHTML = `
-            <span class="rounded-full ${colorClass} w-7 h-7 flex items-center justify-center mr-3 text-lg">${emoji}</span>
-            <span>${val}</span>
-            <button class="ml-auto opacity-0 group-hover:opacity-100 transition px-2 py-1 text-xs bg-blue-600 text-white rounded shadow" onclick="removePsiTip(this)">Remove</button>
-          `;
-          document.getElementById('psiTipsList').appendChild(li);
-          input.value = '';
-        });
-        </script>
-    </div>
-
-    <!-- BOTÓN DARK MODE -->
-    <button
-      id="themeToggleButton"
-      onclick="toggleTheme()"
-      class="fixed bottom-12 right-8 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg"
-      type="button"
-      aria-label="Toggle theme"
-    >
-      🌙 Dark Mode
-    </button>
-
-    <script>
-      /* ===== TASK SYSTEM ===== */
-      (function () {
-        // DOM references
-        const taskInputElement = document.getElementById("taskInput");
-        const addTaskButton = document.getElementById("addButton");
-        const taskListElement = document.getElementById("list");
-
-        // State
-        let taskItems = loadTasks();
-
-        // --- State helpers ---
-        /**
-         * Load tasks from localStorage or, if empty, from the initial DOM.
-         * Also persists DOM-derived tasks into localStorage the first time.
-         *
-         * @returns {string[]} Array of task labels.
-         */
-        function loadTasks() {
-          const stored = safeParseArray(localStorage.getItem("tasks"));
-          if (stored.length) {
-            const normalized = normalizeStoredTasks(stored);
-            if (normalized.length) {
-              saveTasks(normalized);
-              return normalized;
-            }
-          }
-
-          const tasksFromDom = Array.from(taskListElement.children)
-            .map((taskElement) => taskElement.querySelector("span")?.textContent?.trim())
-            .filter(Boolean);
-
-          saveTasks(tasksFromDom);
-          return tasksFromDom;
-        }
-
-        /**
-         * Normalize tasks loaded from localStorage to a string[].
-         * Supports legacy formats like [{ text: "..." }, ...].
-         *
-         * @param {any[]} storedTasks
-         * @returns {string[]}
-         */
-        function normalizeStoredTasks(storedTasks) {
-          return storedTasks
-            .map((item) => {
-              if (typeof item === "string") return item.trim();
-              if (item && typeof item === "object" && typeof item.text === "string") {
-                return item.text.trim();
-              }
-              return "";
-            })
-            .filter(Boolean);
-        }
-
-        /**
-         * Safely parse a JSON string as an array.
-         *
-         * @param {string|null} raw - Raw JSON content from storage.
-         * @returns {any[]} Parsed array or an empty array on failure.
-         */
-        function safeParseArray(raw) {
-          try {
-            const parsed = JSON.parse(raw);
-            return Array.isArray(parsed) ? parsed : [];
-          } catch {
-            return [];
-          }
-        }
-
-        /**
-         * Update in-memory tasks and persist them to localStorage.
-         *
-         * @param {string[]} updatedTasks - New list of task labels.
-         */
-        function saveTasks(updatedTasks) {
-          taskItems = updatedTasks;
-          localStorage.setItem("tasks", JSON.stringify(taskItems));
-        }
-
-        // --- UI render helpers ---
-        /**
-         * Create a DOM element representing a single task row, including
-         * its delete button and associated click handler.
-         *
-         * @param {string} taskLabel - Text to display for the task.
-         * @param {number} index - Index of the task in the current list.
-         * @returns {HTMLDivElement} Configured task container element.
-         */
-        function createTaskElement(taskLabel, index) {
-          const taskContainer = document.createElement("div");
-          taskContainer.className =
-            "flex justify-between items-center p-4 bg-gray-200 dark:bg-slate-700 rounded-lg group transition hover:shadow";
-
-          taskContainer.innerHTML = `
-              <span tabindex="0" title="${taskLabel}">${taskLabel}</span>
-              <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded ml-4 transition"
-                type="button" aria-label="Delete ${taskLabel}" title="Delete">
-                Delete
-              </button>
-            `;
-
-          const deleteButton = taskContainer.querySelector("button");
-          deleteButton.addEventListener("click", () => {
-            if (confirm(`Delete "${taskLabel}"?`)) {
-              const remainingTasks = taskItems.filter((_, currentIndex) => currentIndex !== index);
-              saveTasks(remainingTasks);
-              renderTasks();
-            }
-          });
-
-          return taskContainer;
-        }
-
-        /**
-         * Render the current list of tasks into the DOM,
-         * or show an empty-state message when there are none.
-         */
-        function renderTasks() {
-          taskListElement.innerHTML = "";
-
-          if (!taskItems || taskItems.length === 0) {
-            taskListElement.appendChild(
-              createMessageElement("No tasks found. Add your first topic!")
-            );
-            return;
-          }
-
-          taskItems.forEach((taskLabel, index) => {
-            const taskElement = createTaskElement(taskLabel, index);
-            taskListElement.appendChild(taskElement);
-          });
-        }
-
-        /**
-         * Create a reusable message element to show within the task list,
-         * e.g. an empty-state message.
-         *
-         * @param {string} messageText - Message to be displayed.
-         * @returns {HTMLDivElement} Message container element.
-         */
-        function createMessageElement(messageText) {
-          const messageElement = document.createElement("div");
-          messageElement.className =
-            "text-gray-400 dark:text-gray-500 py-6 text-center";
-          messageElement.textContent = messageText;
-          return messageElement;
-        }
-
-        // --- Input / events ---
-        /**
-         * Read, validate and add a new task from the text input.
-         * Shows inline validation feedback when the value is not acceptable.
-         */
-        function addTaskFromInput() {
-          const newTaskLabel = taskInputElement.value.trim();
-
-          // Basic empty check
-          if (!newTaskLabel) {
-            showValidationState({
-              type: "error",
-              placeholder: "Please enter something!",
-            });
-            return;
-          }
-
-          // Length constraints
-          if (newTaskLabel.length < 3) {
-            showValidationState({
-              type: "error",
-              placeholder: "At least 3 characters",
-            });
-            return;
-          }
-
-          if (newTaskLabel.length > 60) {
-            showValidationState({
-              type: "error",
-              placeholder: "Max 60 characters",
-            });
-            return;
-          }
-
-          // Only spaces / symbols not allowed (allow accented letters too)
-          if (!/[\p{L}\p{N}]/u.test(newTaskLabel)) {
-            showValidationState({
-              type: "error",
-              placeholder: "Use letters or numbers",
-            });
-            return;
-          }
-
-          // Prevent duplicates (case-insensitive)
-          const alreadyExists = taskItems.some(
-            (taskLabel) => taskLabel.toLowerCase() === newTaskLabel.toLowerCase()
-          );
-          if (alreadyExists) {
-            showValidationState({
-              type: "warning",
-              clearValue: true,
-              placeholder: "Already exists!",
-            });
-            return;
-          }
-
-          const updatedTasks = [...taskItems, newTaskLabel];
-          saveTasks(updatedTasks);
-          renderTasks();
-          taskInputElement.value = "";
-        }
-
-        /**
-         * Display a temporary validation state on the task input.
-         *
-         * @param {Object} options - Validation configuration.
-         * @param {"error"|"warning"} options.type - Visual style to apply.
-         * @param {string} options.placeholder - Temporary placeholder text.
-         * @param {boolean} [options.clearValue=false] - Whether to clear the input value.
-         * @param {number} [options.durationMs=1400] - Duration for the visual feedback.
-         */
-        function showValidationState({
-          type,
-          placeholder,
-          clearValue = false,
-          durationMs = 1400,
-        }) {
-          const className =
-            type === "warning" ? "border-yellow-500" : "border-red-500";
-
-          taskInputElement.classList.add(className);
-          if (clearValue) taskInputElement.value = "";
-          taskInputElement.placeholder = placeholder;
-
-          setTimeout(() => {
-            taskInputElement.classList.remove(className);
-            taskInputElement.placeholder = "Write a new index";
-          }, durationMs);
-        }
-
-        /**
-         * Register event handlers related to the task form:
-         * - Click on the "Add up" button.
-         * - Enter keypress on the input.
-         */
-        function registerTaskEventHandlers() {
-          addTaskButton.addEventListener("click", addTaskFromInput);
-          taskInputElement.addEventListener("keypress", (event) => {
-            if ((event.key === "Enter" || event.keyCode === 13) && !event.shiftKey) {
-              addTaskFromInput();
-            }
-          });
-        }
-
-        // --- Initialization ---
-        renderTasks();
-        registerTaskEventHandlers();
-        window.addEventListener("DOMContentLoaded", () => taskInputElement.focus());
-      })();
-    </script>
-
-    <footer class="mt-14 border-t border-gray-200 dark:border-gray-800">
-      <div class="max-w-6xl mx-auto px-8 py-10 grid gap-8 md:grid-cols-2">
-        <div>
-          <h2 class="text-lg font-semibold mb-2">Contact</h2>
-          <p class="text-gray-600 dark:text-gray-300">
-            Email:
-            <a
-              class="text-blue-700 dark:text-blue-300 underline underline-offset-4"
-              href="mailto:saulperez@hotmail.com"
-              >saulperez@hotmail.com</a
-            >
-          </p>
-        </div>
-
-        <div>
-          <h2 class="text-lg font-semibold mb-2">FAQ</h2>
-          <div class="space-y-3">
-            <details class="bg-gray-50 dark:bg-slate-800 rounded-lg px-4 py-3">
-              <summary class="cursor-pointer font-medium">
-                Where are my tasks saved?
-              </summary>
-              <p class="mt-2 text-gray-600 dark:text-gray-300">
-                In your browser <code>localStorage</code> under the key
-                <code>tasks</code>.
-              </p>
-            </details>
-
-            <details class="bg-gray-50 dark:bg-slate-800 rounded-lg px-4 py-3">
-              <summary class="cursor-pointer font-medium">
-                How do I compile Tailwind CSS?
-              </summary>
-              <p class="mt-2 text-gray-600 dark:text-gray-300">
-                Run <code>npm run dev</code> to build
-                <code>src/styles.css</code> into <code>dist/styles.css</code>.
-              </p>
-            </details>
-
-            <details class="bg-gray-50 dark:bg-slate-800 rounded-lg px-4 py-3">
-              <summary class="cursor-pointer font-medium">
-                Why does the theme stay after refreshing?
-              </summary>
-              <p class="mt-2 text-gray-600 dark:text-gray-300">
-                The selected theme is stored in <code>localStorage</code> under
-                the key <code>theme</code>.
-              </p>
-            </details>
-          </div>
+          <div id="list" class="space-y-4"></div>
         </div>
       </div>
-    </footer>
+    </div>
+
+    <script>
+      // ==== CARGAR TAREAS Y NORMALIZAR ====
+      let rawTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      let tasks = rawTasks
+        .map((t) => {
+          if (typeof t === "string") return { text: t, completed: false }; // tareas antiguas
+          if (t && typeof t === "object")
+            return { text: t.text || "", completed: !!t.completed };
+          return null;
+        })
+        .filter(Boolean);
+
+      // ==== GUARDAR ====
+      function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      // ==== AÑADIR NUEVA TAREA ====
+      function addTask() {
+        const input = document.getElementById("taskInput");
+        const text = input.value.trim();
+        if (!text) return;
+
+        tasks.push({ text, completed: false });
+        input.value = "";
+        saveTasks();
+        renderTasks();
+      }
+
+      // ==== FILTRADO Y BÚSQUEDA ====
+      function getFilteredTasks() {
+        const search = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const filter = document.getElementById("filterSelect").value;
+
+        return tasks.filter((t) => {
+          const matchText = t.text.toLowerCase().includes(search);
+          let matchFilter = true;
+          if (filter === "pending") matchFilter = !t.completed;
+          if (filter === "completed") matchFilter = t.completed;
+          return matchText && matchFilter;
+        });
+      }
+
+      // ==== RENDERIZAR ====
+      function renderTasks() {
+        const list = document.getElementById("list");
+        list.innerHTML = "";
+
+        const filtered = getFilteredTasks();
+
+        if (filtered.length === 0) {
+          const msg = document.createElement("div");
+          msg.className = "text-gray-400 dark:text-gray-500 py-6 text-center";
+          msg.textContent = "No tasks found.";
+          list.appendChild(msg);
+          return;
+        }
+
+        filtered.forEach((t, i) => {
+          const div = document.createElement("div");
+          div.className =
+            "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg";
+
+          div.innerHTML = `
+      <span style="text-decoration:${t.completed ? "line-through" : "none"}">
+        ${t.text}
+      </span>
+      <div class="flex gap-2">
+        <button class="bg-green-500 text-white px-2 rounded">✔</button>
+        <button class="bg-yellow-500 text-white px-2 rounded">✏️</button>
+        <button class="bg-red-500 text-white px-2 rounded">🗑</button>
+      </div>
+    `;
+
+          const [btnComplete, btnEdit, btnDelete] =
+            div.querySelectorAll("button");
+
+          btnComplete.onclick = () => {
+            const idx = tasks.indexOf(t);
+            tasks[idx].completed = !tasks[idx].completed;
+            saveTasks();
+            renderTasks();
+          };
+
+          btnEdit.onclick = () => {
+            const idx = tasks.indexOf(t);
+            const nuevo = prompt("Editar:", tasks[idx].text);
+            if (nuevo) {
+              tasks[idx].text = nuevo;
+              saveTasks();
+              renderTasks();
+            }
+          };
+
+          btnDelete.onclick = () => {
+            const idx = tasks.indexOf(t);
+            tasks.splice(idx, 1);
+            saveTasks();
+            renderTasks();
+          };
+
+          list.appendChild(div);
+        });
+      }
+
+      // ==== EVENTOS ====
+      document.getElementById("addButton").onclick = addTask;
+      document.getElementById("searchInput").oninput = renderTasks;
+      document.getElementById("filterSelect").onchange = renderTasks;
+      document.getElementById("completeAllBtn").onclick = () => {
+        tasks.forEach((t) => (t.completed = true));
+        saveTasks();
+        renderTasks();
+      };
+
+      // ==== INICIALIZAR ====
+      renderTasks();
+    </script>
   </body>
 </html>
