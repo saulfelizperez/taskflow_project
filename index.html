@@ -82,51 +82,40 @@
           >
             Borrar completadas
           </button>
+
+          <!-- Selector de lista -->
+          <select
+            id="listaSelect"
+            class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700 mt-2"
+          >
+            <option value="Trading Basics">Trading Basics</option>
+            <option value="PsicoTrading">PsicoTrading</option>
+          </select>
         </div>
 
-        <!-- LISTA -->
-        <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
-          <h2 class="text-xl font-semibold mb-6">Trading Basics</h2>
-          <div id="list" class="space-y-4"></div>
-        </div>
+        <!-- LISTAS -->
+        <div id="listsContainer" class="space-y-4 mt-6"></div>
       </div>
     </div>
 
     <script>
-      // ==== CARGAR TAREAS Y NORMALIZAR ====
-      let rawTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-      let tasks = rawTasks
-        .map((t) => {
-          if (typeof t === "string") return { text: t, completed: false };
-          if (t && typeof t === "object")
-            return { text: t.text || "", completed: !!t.completed };
-          return null;
-        })
-        .filter(Boolean);
+      // ==== ESTADO DE TODAS LAS LISTAS ====
+      let allTasks = JSON.parse(localStorage.getItem("allTasks")) || {
+        "Trading Basics": [],
+        PsicoTrading: [],
+      };
 
-      // ==== GUARDAR ====
-      function saveTasks() {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-      }
-
-      // ==== AÑADIR NUEVA TAREA ====
-      function addTask() {
-        const input = document.getElementById("taskInput");
-        const text = input.value.trim();
-        if (!text) return;
-
-        tasks.push({ text, completed: false });
-        input.value = "";
-        saveTasks();
-        renderTasks();
+      function saveAllTasks() {
+        localStorage.setItem("allTasks", JSON.stringify(allTasks));
       }
 
       // ==== FILTRADO Y BÚSQUEDA ====
-      function getFilteredTasks() {
+      function getFilteredTasks(listName) {
         const search = document
           .getElementById("searchInput")
           .value.toLowerCase();
         const filter = document.getElementById("filterSelect").value;
+        const tasks = allTasks[listName] || [];
 
         return tasks.filter((t) => {
           const matchText = t.text.toLowerCase().includes(search);
@@ -137,80 +126,109 @@
         });
       }
 
-      // ==== RENDERIZAR ====
+      // ==== RENDERIZAR LISTAS ====
       function renderTasks() {
-        const list = document.getElementById("list");
-        list.innerHTML = "";
+        const container = document.getElementById("listsContainer");
+        container.innerHTML = "";
 
-        const filtered = getFilteredTasks();
+        const currentList = document.getElementById("listaSelect").value;
+        const tasks = getFilteredTasks(currentList);
 
-        if (filtered.length === 0) {
+        const divLista = document.createElement("div");
+        divLista.className =
+          "bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow";
+
+        const title = document.createElement("h2");
+        title.className = "text-xl font-semibold mb-6";
+        title.textContent = currentList;
+        divLista.appendChild(title);
+
+        if (tasks.length === 0) {
           const msg = document.createElement("div");
           msg.className = "text-gray-400 dark:text-gray-500 py-6 text-center";
           msg.textContent = "No tasks found.";
-          list.appendChild(msg);
-          return;
+          divLista.appendChild(msg);
+        } else {
+          tasks.forEach((t, i) => {
+            const div = document.createElement("div");
+            div.className =
+              "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg";
+
+            div.innerHTML = `
+              <span style="text-decoration:${t.completed ? "line-through" : "none"}">
+                ${t.text}
+              </span>
+              <div class="flex gap-2">
+                <button class="bg-green-500 text-white px-2 rounded">✔</button>
+                <button class="bg-yellow-500 text-white px-2 rounded">✏️</button>
+                <button class="bg-red-500 text-white px-2 rounded">🗑</button>
+              </div>
+            `;
+
+            const [btnComplete, btnEdit, btnDelete] =
+              div.querySelectorAll("button");
+
+            btnComplete.onclick = () => {
+              allTasks[currentList][i].completed =
+                !allTasks[currentList][i].completed;
+              saveAllTasks();
+              renderTasks();
+            };
+
+            btnEdit.onclick = () => {
+              const nuevo = prompt("Editar:", allTasks[currentList][i].text);
+              if (nuevo) {
+                allTasks[currentList][i].text = nuevo;
+                saveAllTasks();
+                renderTasks();
+              }
+            };
+
+            btnDelete.onclick = () => {
+              allTasks[currentList].splice(i, 1);
+              saveAllTasks();
+              renderTasks();
+            };
+
+            divLista.appendChild(div);
+          });
         }
 
-        filtered.forEach((t, i) => {
-          const div = document.createElement("div");
-          div.className =
-            "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg";
+        container.appendChild(divLista);
+      }
 
-          div.innerHTML = `
-      <span style="text-decoration:${t.completed ? "line-through" : "none"}">
-        ${t.text}
-      </span>
-      <div class="flex gap-2">
-        <button class="bg-green-500 text-white px-2 rounded">✔</button>
-        <button class="bg-yellow-500 text-white px-2 rounded">✏️</button>
-        <button class="bg-red-500 text-white px-2 rounded">🗑</button>
-      </div>
-    `;
+      // ==== AÑADIR TAREA ====
+      function addTask() {
+        const input = document.getElementById("taskInput");
+        const text = input.value.trim();
+        if (!text) return;
 
-          const [btnComplete, btnEdit, btnDelete] =
-            div.querySelectorAll("button");
-
-          btnComplete.onclick = () => {
-            const idx = tasks.indexOf(t);
-            tasks[idx].completed = !tasks[idx].completed;
-            saveTasks();
-            renderTasks();
-          };
-
-          btnEdit.onclick = () => {
-            const idx = tasks.indexOf(t);
-            const nuevo = prompt("Editar:", tasks[idx].text);
-            if (nuevo) {
-              tasks[idx].text = nuevo;
-              saveTasks();
-              renderTasks();
-            }
-          };
-
-          btnDelete.onclick = () => {
-            const idx = tasks.indexOf(t);
-            tasks.splice(idx, 1);
-            saveTasks();
-            renderTasks();
-          };
-
-          list.appendChild(div);
-        });
+        const currentList = document.getElementById("listaSelect").value;
+        allTasks[currentList].push({ text, completed: false });
+        input.value = "";
+        saveAllTasks();
+        renderTasks();
       }
 
       // ==== EVENTOS ====
       document.getElementById("addButton").onclick = addTask;
       document.getElementById("searchInput").oninput = renderTasks;
       document.getElementById("filterSelect").onchange = renderTasks;
+      document.getElementById("listaSelect").onchange = renderTasks;
+
       document.getElementById("completeAllBtn").onclick = () => {
-        tasks.forEach((t) => (t.completed = true));
-        saveTasks();
+        const currentList = document.getElementById("listaSelect").value;
+        allTasks[currentList].forEach((t) => (t.completed = true));
+        saveAllTasks();
         renderTasks();
       };
+
       document.getElementById("deleteCompletedBtn").onclick = () => {
-        tasks = tasks.filter((t) => !t.completed);
-        saveTasks();
+        const currentList = document.getElementById("listaSelect").value;
+        allTasks[currentList] = allTasks[currentList].filter(
+          (t) => !t.completed,
+        );
+        saveAllTasks();
         renderTasks();
       };
 
