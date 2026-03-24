@@ -4,10 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trading Knowledge</title>
-    <link rel="stylesheet" href="./dist/styles.css" />
-    <script src="./theme.js"></script>
-  </head>
+    <script>
+      // === theme.js inline para que funcione inmediatamente ===
+      (function () {
+        const userTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const isDark = userTheme === "dark" || (!userTheme && prefersDark);
+        document.documentElement.classList.toggle("dark", isDark);
+        updateThemeButton(isDark);
 
+        window.toggleTheme = toggleTheme;
+        window.updateThemeButton = updateThemeButton;
+
+        function toggleTheme() {
+          const html = document.documentElement;
+          const darkEnabled = html.classList.toggle("dark");
+          localStorage.setItem("theme", darkEnabled ? "dark" : "light");
+          updateThemeButton(darkEnabled);
+        }
+
+        function updateThemeButton(isDark) {
+          const btn = document.getElementById("Switch-Mode");
+          if (!btn) return;
+          btn.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+        }
+      })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
   <body
     class="bg-white text-black dark:bg-slate-900 dark:text-white transition-colors duration-300"
   >
@@ -24,7 +50,6 @@
             <li>IBEX 35</li>
           </ul>
         </div>
-
         <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
           <h2 class="text-lg font-semibold mb-4">Trading Tools</h2>
           <ul class="space-y-2 text-gray-600 dark:text-gray-300">
@@ -47,20 +72,17 @@
             placeholder="Write a new index"
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700"
           />
-
           <button
             id="addButton"
             class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg"
           >
             Add up
           </button>
-
           <input
             id="searchInput"
             placeholder="Search..."
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700 mt-4"
           />
-
           <select
             id="filterSelect"
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700 mt-2"
@@ -69,21 +91,18 @@
             <option value="pending">Pending</option>
             <option value="completed">Completed</option>
           </select>
-
           <button
             id="completeAllBtn"
             class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg mt-2"
           >
             Complete All
           </button>
-
           <button
             id="deleteCompletedBtn"
             class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg mt-2"
           >
             Delete Completed
           </button>
-
           <select
             id="listaSelect"
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700 mt-2"
@@ -94,29 +113,40 @@
         </section>
 
         <!-- LISTAS -->
-        <section id="listsContainer" class="space-y-4 mt-6"></section>
+        <section
+          id="listsContainer"
+          class="space-y-4 mt-6 min-h-[200px]"
+        ></section>
       </main>
     </div>
 
+    <!-- Botón de cambio de tema -->
+    <button
+      id="Switch-Mode"
+      class="fixed bottom-6 right-6 z-[9999] px-4 py-2 bg-gray-300 dark:bg-gray-700 text-black dark:text-white rounded-full shadow-lg hover:scale-105 hover:bg-gray-400 dark:hover:bg-gray-600 active:scale-95 transition-all duration-200 ease-in-out"
+    >
+      🌙 Dark Mode
+    </button>
+
+    <!-- SCRIPT PRINCIPAL -->
     <script>
       // ==== ESTADO DE TODAS LAS LISTAS ====
-      let allTasks = JSON.parse(localStorage.getItem("allTasks")) || {
-        "Trading Basics": [],
-        PsicoTrading: [],
-      };
+      let allTasks = JSON.parse(localStorage.getItem("allTasks"));
+      if (!allTasks || typeof allTasks !== "object") {
+        allTasks = { "Trading Basics": [], PsicoTrading: [] };
+      }
 
       function saveAllTasks() {
         localStorage.setItem("allTasks", JSON.stringify(allTasks));
       }
 
-      // ==== FILTRADO Y BÚSQUEDA ====
+      // ==== FILTRADO ====
       function getFilteredTasks(listName) {
         const search = document
           .getElementById("searchInput")
           .value.toLowerCase();
         const filter = document.getElementById("filterSelect").value;
         const tasks = allTasks[listName] || [];
-
         return tasks.filter((t) => {
           const matchText = t.text.toLowerCase().includes(search);
           let matchFilter = true;
@@ -130,9 +160,8 @@
       function renderTasks() {
         const container = document.getElementById("listsContainer");
         container.innerHTML = "";
-
         const currentList = document.getElementById("listaSelect").value;
-        const tasks = getFilteredTasks(currentList);
+        const tasks = allTasks[currentList] || [];
 
         const divLista = document.createElement("div");
         divLista.className =
@@ -153,28 +182,21 @@
             const div = document.createElement("div");
             div.className =
               "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg";
-
             div.innerHTML = `
-              <span style="text-decoration:${t.completed ? "line-through" : "none"}">
-                ${t.text}
-              </span>
-              <div class="flex gap-2">
-                <button class="bg-green-500 text-white px-2 rounded">✔</button>
-                <button class="bg-yellow-500 text-white px-2 rounded">✏️</button>
-                <button class="bg-red-500 text-white px-2 rounded">🗑</button>
-              </div>
-            `;
-
+            <span style="text-decoration:${t.completed ? "line-through" : "none"}">${t.text}</span>
+            <div class="flex gap-2">
+              <button class="bg-green-500 text-white px-2 rounded">✔</button>
+              <button class="bg-yellow-500 text-white px-2 rounded">✏️</button>
+              <button class="bg-red-500 text-white px-2 rounded">🗑</button>
+            </div>`;
             const [btnComplete, btnEdit, btnDelete] =
               div.querySelectorAll("button");
-
             btnComplete.onclick = () => {
               allTasks[currentList][i].completed =
                 !allTasks[currentList][i].completed;
               saveAllTasks();
               renderTasks();
             };
-
             btnEdit.onclick = () => {
               const nuevo = prompt("Editar:", allTasks[currentList][i].text);
               if (nuevo) {
@@ -183,13 +205,11 @@
                 renderTasks();
               }
             };
-
             btnDelete.onclick = () => {
               allTasks[currentList].splice(i, 1);
               saveAllTasks();
               renderTasks();
             };
-
             divLista.appendChild(div);
           });
         }
@@ -202,7 +222,6 @@
         const input = document.getElementById("taskInput");
         const text = input.value.trim();
         if (!text) return;
-
         const currentList = document.getElementById("listaSelect").value;
         allTasks[currentList].push({ text, completed: false });
         input.value = "";
@@ -215,14 +234,12 @@
       document.getElementById("searchInput").oninput = renderTasks;
       document.getElementById("filterSelect").onchange = renderTasks;
       document.getElementById("listaSelect").onchange = renderTasks;
-
       document.getElementById("completeAllBtn").onclick = () => {
         const currentList = document.getElementById("listaSelect").value;
         allTasks[currentList].forEach((t) => (t.completed = true));
         saveAllTasks();
         renderTasks();
       };
-
       document.getElementById("deleteCompletedBtn").onclick = () => {
         const currentList = document.getElementById("listaSelect").value;
         allTasks[currentList] = allTasks[currentList].filter(
@@ -235,5 +252,13 @@
       // ==== INICIALIZAR ====
       renderTasks();
     </script>
+
+    <footer
+      class="bg-gray-100 dark:bg-slate-800 text-center p-4 rounded-xl shadow mt-6"
+    >
+      <p class="text-sm text-gray-600 dark:text-gray-300">
+        &copy; 2026 Trading Knowledge. All rights reserved.
+      </p>
+    </footer>
   </body>
 </html>

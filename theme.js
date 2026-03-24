@@ -3,8 +3,7 @@
   const userTheme = localStorage.getItem("theme");
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-  const isDark =
-    userTheme === "dark" || (!userTheme && prefersDark);
+  const isDark = userTheme === "dark" || (!userTheme && prefersDark);
 
   document.documentElement.classList.toggle("dark", isDark);
   updateThemeButton(isDark);
@@ -20,7 +19,7 @@ function toggleTheme() {
 
 // Actualiza el texto del botón según el modo
 function updateThemeButton(isDark) {
-  const button = document.getElementById("themeToggleButton");
+  const button = document.getElementById("Switch-Mode");
   if (!button) return;
 
   button.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
