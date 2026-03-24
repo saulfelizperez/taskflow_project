@@ -11,9 +11,10 @@
   <body
     class="bg-white text-black dark:bg-slate-900 dark:text-white transition-colors duration-300"
   >
+    <!-- LAYOUT PRINCIPAL -->
     <div class="flex min-h-screen p-8 gap-6">
       <!-- SIDEBAR -->
-      <div class="w-64 space-y-6">
+      <aside class="w-64 space-y-6">
         <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
           <h2 class="text-lg font-semibold mb-4">Index</h2>
           <ul class="space-y-2 text-gray-600 dark:text-gray-300">
@@ -23,6 +24,7 @@
             <li>IBEX 35</li>
           </ul>
         </div>
+
         <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
           <h2 class="text-lg font-semibold mb-4">Trading Tools</h2>
           <ul class="space-y-2 text-gray-600 dark:text-gray-300">
@@ -31,12 +33,12 @@
             <li>EasyOrder</li>
           </ul>
         </div>
-      </div>
+      </aside>
 
-      <!-- MAIN -->
-      <div class="flex-1 space-y-8">
+      <!-- CONTENIDO PRINCIPAL -->
+      <main class="flex-1 space-y-8">
         <!-- INPUT Y BOTONES -->
-        <div
+        <section
           class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow flex flex-col gap-3"
         >
           <input
@@ -53,7 +55,6 @@
             Add up
           </button>
 
-          <!-- Búsqueda y filtros -->
           <input
             id="searchInput"
             placeholder="Search..."
@@ -83,7 +84,6 @@
             Delete Completed
           </button>
 
-          <!-- Selector de lista -->
           <select
             id="listaSelect"
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700 mt-2"
@@ -91,11 +91,11 @@
             <option value="Trading Basics">Trading Basics</option>
             <option value="PsicoTrading">PsicoTrading</option>
           </select>
-        </div>
+        </section>
 
         <!-- LISTAS -->
-        <div id="listsContainer" class="space-y-4 mt-6"></div>
-      </div>
+        <section id="listsContainer" class="space-y-4 mt-6"></section>
+      </main>
     </div>
 
     <script>
