@@ -46,7 +46,7 @@
           <input
             id="taskInput"
             type="text"
-            placeholder="Write a new index"
+            placeholder="Write the next trading idea📊"
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700"
           />
           <button
@@ -84,15 +84,15 @@
             id="listaSelect"
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700 mt-2"
           >
-            <option value="Trading Basics">Trading Basics</option>
-            <option value="PsicoTrading">PsicoTrading</option>
+            <option value="📈Trading Basics📉">📈Trading Basics📉</option>
+            <option value="🧠PsicoTrading🧠">🧠PsicoTrading🧠</option>
           </select>
         </section>
 
         <!-- Lista de tareas -->
         <section
           id="listsContainer"
-          class="space-y-4 mt-6 rounded-xl p-4 shadow"
+          class="space-y-4 mt-6 rounded-xl p-6 bg-gray-100 dark:bg-slate-800 shadow min-h-[200px]"
         ></section>
       </main>
     </div>
@@ -168,7 +168,7 @@
 
         if (tasks.length === 0) {
           const msg = document.createElement("div");
-          msg.className = "text-gray-400 dark:text-gray-500 py-6 text-center";
+          msg.className = "text-gray-700 dark:text-gray-300 py-6 text-center";
           msg.textContent = "No tasks found.";
           container.appendChild(msg);
         } else {
