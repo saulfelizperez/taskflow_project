@@ -11,10 +11,11 @@
       tailwind.config = { darkMode: "class" };
     </script>
   </head>
-  <body class="transition-colors duration-300">
-    <div
-      class="flex min-h-screen p-8 gap-6 bg-white dark:bg-slate-900 text-black dark:text-white"
-    >
+  <body
+    class="flex flex-col min-h-screen transition-colors duration-300 bg-white dark:bg-slate-900 text-black dark:text-white"
+  >
+    <!-- Contenedor principal -->
+    <div class="flex-1 flex p-8 gap-6">
       <!-- Sidebar -->
       <aside class="w-64 space-y-6">
         <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
@@ -38,6 +39,7 @@
 
       <!-- Contenido -->
       <main class="flex-1 space-y-8">
+        <!-- Input y botones -->
         <section
           class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow flex flex-col gap-3"
         >
@@ -90,10 +92,19 @@
         <!-- Lista de tareas -->
         <section
           id="listsContainer"
-          class="space-y-4 mt-6 min-h-[200px] p-6 bg-gray-100 dark:bg-slate-800 rounded-xl shadow"
+          class="space-y-4 mt-6 rounded-xl p-4 shadow"
         ></section>
       </main>
     </div>
+
+    <!-- Footer -->
+    <footer
+      class="bg-white dark:bg-slate-900 text-center p-4 rounded-xl shadow mt-auto"
+    >
+      <p class="text-sm text-gray-600 dark:text-gray-300">
+        &copy; 2026 Trading Knowledge. All rights reserved.
+      </p>
+    </footer>
 
     <!-- Botón de cambio de tema -->
     <button
@@ -103,16 +114,8 @@
       🌙 Dark Mode
     </button>
 
-    <footer
-      class="bg-gray-100 dark:bg-slate-800 text-center p-4 rounded-xl shadow mt-6"
-    >
-      <p class="text-sm text-gray-600 dark:text-gray-300">
-        &copy; 2026 Trading Knowledge. All rights reserved.
-      </p>
-    </footer>
-
+    <!-- Script de tareas y tema -->
     <script>
-      // ====== MODO OSCURO / CLARO ======
       const html = document.documentElement;
       const themeButton = document.getElementById("Switch-Mode");
 
@@ -129,7 +132,7 @@
         themeButton.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
       });
 
-      // ====== LISTA DE TAREAS ======
+      // ====== Lista de tareas ======
       let allTasks = JSON.parse(localStorage.getItem("allTasks")) || {
         "Trading Basics": [],
         PsicoTrading: [],
@@ -174,11 +177,11 @@
             div.className =
               "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg mb-2";
             div.innerHTML = `<span style="text-decoration:${t.completed ? "line-through" : "none"}">${t.text}</span>
-                       <div class="flex gap-2">
-                         <button class="bg-green-500 text-white px-2 rounded">✔</button>
-                         <button class="bg-yellow-500 text-white px-2 rounded">✏️</button>
-                         <button class="bg-red-500 text-white px-2 rounded">🗑</button>
-                       </div>`;
+                         <div class="flex gap-2">
+                           <button class="bg-green-500 text-white px-2 rounded">✔</button>
+                           <button class="bg-yellow-500 text-white px-2 rounded">✏️</button>
+                           <button class="bg-red-500 text-white px-2 rounded">🗑</button>
+                         </div>`;
             const [btnComplete, btnEdit, btnDelete] =
               div.querySelectorAll("button");
             btnComplete.onclick = () => {
