@@ -50,8 +50,7 @@ Small practice project developed in DAM to experiment with a trading–themed in
 ```bash
     npm install
 
-
+```
 ### Project usage
 
  People who already are verified can add different tasks about good trading practices
-```
