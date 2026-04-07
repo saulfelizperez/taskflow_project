@@ -1,68 +1,67 @@
+import { fetchTasks, createTask, deleteTask } from "./api/client.js";
+
 const form = document.getElementById("task-form");
 const input = document.getElementById("task-input");
 const container = document.getElementById("task-container");
 
-let tasks = [];
+// Cargar tareas desde API
+document.addEventListener("DOMContentLoaded", loadTasks);
 
-// Cargar tareas guardadas
-document.addEventListener("DOMContentLoaded", () => {
-  const saved = localStorage.getItem("tasks");
+async function loadTasks() {
+  container.innerHTML = "Cargando...";
 
-  if (saved) {
-    tasks = JSON.parse(saved);
-    tasks.forEach(task => createTask(task.text, task.priority));
+  try {
+    const tasks = await fetchTasks();
+
+    container.innerHTML = "";
+
+    tasks.forEach((task) => {
+      renderTask(task);
+    });
+  } catch (error) {
+    container.innerHTML = "Error al cargar tareas";
   }
-});
+}
 
 // Añadir tarea
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const text = input.value.trim();
   if (text === "") return;
 
-  const newTask = {
-    text: text,
-    priority: tasks.length + 1
-  };
-
-  tasks.push(newTask);
-  saveTasks();
-  createTask(newTask.text, newTask.priority);
-
-  input.value = "";
+  try {
+    await createTask(text);
+    input.value = "";
+    loadTasks(); // recargar lista
+  } catch (error) {
+    alert("Error al crear tarea");
+  }
 });
 
-// Crear estructura visual igual a tu HTML
-function createTask(text, priority) {
-
+// Renderizar tarea
+function renderTask(task) {
   const taskDiv = document.createElement("div");
   taskDiv.classList.add("task");
 
   const spanText = document.createElement("span");
-  spanText.textContent = text;
-
-  const badge = document.createElement("span");
-  badge.classList.add("badge");
-  badge.textContent = priority;
+  spanText.textContent = task.title;
 
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "X";
   deleteBtn.style.marginLeft = "10px";
 
-  deleteBtn.addEventListener("click", () => {
-    taskDiv.remove();
-    tasks = tasks.filter(t => t.text !== text);
-    saveTasks();
+  deleteBtn.addEventListener("click", async () => {
+    try {
+      await deleteTask(task.id);
+      loadTasks();
+    } catch (error) {
+      alert("Error al eliminar tarea");
+    }
   });
 
   taskDiv.appendChild(spanText);
-  taskDiv.appendChild(badge);
   taskDiv.appendChild(deleteBtn);
 
   container.appendChild(taskDiv);
-}
-
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
