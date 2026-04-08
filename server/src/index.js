@@ -1,15 +1,15 @@
-// index.js
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
 
-// Configuracion de variables de entorno
-const { PORT } = require('./config/env');
+// Configuración de variables de entorno
+const { PORT } = require("./config/env");
 
 // Importa Swagger
-const { swaggerUi, swaggerSpec } = require('./docs/swagger.js');
+const { swaggerUi, swaggerSpec } = require("./docs/swagger.js");
 
 // Importa rutas
-const taskRoutes = require('./routes/task.routes');
+const taskRoutes = require("./routes/task.routes");
 
 const app = express();
 
@@ -17,33 +17,48 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Rutas de la API
-app.use('/api/v1/tasks', taskRoutes);
+// Montaje de rutas de la API
+app.use("/api/v1/tasks", taskRoutes);
 
 // Ruta de documentación Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Middleware global de manejo de errores
+// 🔴 Middleware de ruta no encontrada
+app.use((req, res, next) => {
+  res.status(404).json({ error: "Ruta no encontrada" });
+});
+
+// 🔴 Middleware global de manejo de errores (COMPLETO)
 app.use((err, req, res, next) => {
-  if (err.message === 'NOT_FOUND') {
-    return res.status(404).json({ error: 'Recurso no encontrado' });
+  console.error(err); // Log interno
+
+  if (err.message === "NOT_FOUND") {
+    return res.status(404).json({ error: "Recurso no encontrado" });
   }
 
-  console.error(err);
-  res.status(500).json({ error: 'Error interno del servidor' });
+  if (err.message === "TITLE_INVALID") {
+    return res.status(400).json({ error: "Título inválido" });
+  }
+
+  if (err.message === "NO_FIELDS_TO_UPDATE") {
+    return res.status(400).json({
+      error: "Al menos un campo para actualizar es requerido",
+    });
+  }
+
+  // Error genérico
+  res.status(500).json({ error: "Error interno del servidor" });
+});
+
+// Sirve archivos estáticos del frontend
+app.use(express.static(path.join(__dirname, "../../frontend")));
+
+// Ruta raíz
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../frontend/index.html"));
 });
 
 // Arranca servidor
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-});
-
-const path = require('path');
-
-// Sirve archivos estáticos del frontend
-app.use(express.static(path.join(__dirname, '../../frontend')));
-
-// Ruta raíz: siempre devuelve index.html
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../frontend/index.html'));
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
