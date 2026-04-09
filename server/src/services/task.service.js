@@ -1,51 +1,61 @@
-let tasks = [];
+let tasks = []; // "base de datos" en memoria
 
+// Obtener todas las tareas
 function obtenerTodas() {
   return tasks;
 }
 
-function crearTarea(data) {
-  if (!data.title || typeof data.title !== 'string') {
-    throw new Error('TITLE_INVALID'); // Error controlado
+// Crear una nueva tarea
+function crearTarea({ title }) {
+  if (!title || typeof title !== "string") {
+    throw new Error("TITLE_INVALID");
   }
 
   const newTask = {
-    id: Date.now().toString(), // ID único basado en timestamp
-    title: data.title,
-    completed: false
+    id: Date.now().toString(),
+    title,
+    completed: false,
   };
 
   tasks.push(newTask);
   return newTask;
 }
 
+// Eliminar una tarea
 function eliminarTarea(id) {
-  const index = tasks.findIndex(t => t.id === id);
-  if (index === -1) {
-    throw new Error('NOT_FOUND'); // Error 404 controlado
+  const exists = tasks.some((task) => task.id === id);
+
+  if (!exists) {
+    throw new Error("NOT_FOUND");
   }
-  tasks.splice(index, 1);
+
+  tasks = tasks.filter((task) => task.id !== id);
 }
 
-function actualizarTarea(id, data) {
-  const task = tasks.find(t => t.id === id);
-  if (!task) {
-    throw new Error('NOT_FOUND');
+// Actualizar una tarea
+function actualizarTarea(id, updates) {
+  const index = tasks.findIndex((task) => task.id === id);
+
+  if (index === -1) {
+    throw new Error("NOT_FOUND");
   }
 
-  if (!data.title && data.completed === undefined) {
-    throw new Error('NO_FIELDS_TO_UPDATE');
+  if (!updates || Object.keys(updates).length === 0) {
+    throw new Error("NO_FIELDS_TO_UPDATE");
   }
 
-  if (data.title) task.title = data.title;
-  if (data.completed !== undefined) task.completed = data.completed;
+  const updatedTask = {
+    ...tasks[index],
+    ...updates,
+  };
 
-  return task;
+  tasks[index] = updatedTask;
+  return updatedTask;
 }
 
 module.exports = {
   obtenerTodas,
   crearTarea,
   eliminarTarea,
-  actualizarTarea
+  actualizarTarea,
 };
