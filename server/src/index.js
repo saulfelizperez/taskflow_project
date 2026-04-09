@@ -49,7 +49,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Error interno del servidor" });
 });
 
-// Servir frontend 
+// Servir frontend
 app.use(express.static(path.join(__dirname, "../../frontend")));
 
 app.get("/", (req, res) => {
