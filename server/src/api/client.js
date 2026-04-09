@@ -1,61 +1,51 @@
-const API = '/api/v1/tasks';
+// Detecta si estás en producción (Vercel) o desarrollo local
+const API = window.location.hostname.includes("vercel.app")
+  ? "https://taskflow-project-l1d1.onrender.com/api/v1/tasks" // Cambia por tu URL real de Render
+  : "/api/v1/tasks"; // Proxy local para desarrollo
 
 // Obtener todas las tareas
 export async function fetchTasks() {
   const res = await fetch(API);
-
   if (!res.ok) {
     const error = await res.json();
-    throw new Error(error.error || 'Error al obtener tareas');
+    throw new Error(error.error || "Error al obtener tareas");
   }
-
   return res.json();
 }
 
 // Crear una nueva tarea
 export async function createTask(title) {
   const res = await fetch(API, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ title })
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title }),
   });
-
   if (!res.ok) {
     const error = await res.json();
-    throw new Error(error.error || 'Error al crear tarea');
+    throw new Error(error.error || "Error al crear tarea");
   }
-
   return res.json();
 }
 
 // Eliminar una tarea
 export async function deleteTask(id) {
-  const res = await fetch(`${API}/${id}`, {
-    method: 'DELETE'
-  });
-
+  const res = await fetch(`${API}/${id}`, { method: "DELETE" });
   if (!res.ok) {
     const error = await res.json();
-    throw new Error(error.error || 'Error al eliminar tarea');
+    throw new Error(error.error || "Error al eliminar tarea");
   }
 }
 
-// 🔥 NUEVO (importante)
+// Actualizar tarea
 export async function updateTask(id, updates) {
   const res = await fetch(`${API}/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(updates)
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updates),
   });
-
   if (!res.ok) {
     const error = await res.json();
-    throw new Error(error.error || 'Error al actualizar tarea');
+    throw new Error(error.error || "Error al actualizar tarea");
   }
-
   return res.json();
 }
