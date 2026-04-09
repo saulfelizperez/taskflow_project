@@ -4,7 +4,7 @@ const form = document.getElementById("task-form");
 const input = document.getElementById("task-input");
 const container = document.getElementById("task-container");
 
-// Cargar tareas desde API
+// Cargar tareas desde API al inicio
 document.addEventListener("DOMContentLoaded", loadTasks);
 
 async function loadTasks() {
@@ -12,14 +12,17 @@ async function loadTasks() {
 
   try {
     const tasks = await fetchTasks();
-
     container.innerHTML = "";
 
-    tasks.forEach((task) => {
-      renderTask(task);
-    });
+    if (tasks.length === 0) {
+      container.textContent = "There is no task yet";
+      return;
+    }
+
+    tasks.forEach((task) => renderTask(task));
   } catch (error) {
-    container.innerHTML = "Error al cargar tareas";
+    console.error(error);
+    container.textContent = "Error loading tasks ";
   }
 }
 
@@ -31,15 +34,19 @@ form.addEventListener("submit", async (e) => {
   if (text === "") return;
 
   try {
-    await createTask(text);
+    // Crear tarea y recibir el objeto completo con id
+    const newTask = await createTask(text);
     input.value = "";
-    loadTasks(); // recargar lista
+
+    // Renderizar solo la nueva tarea sin recargar todo
+    renderTask(newTask);
   } catch (error) {
-    alert("Error al crear tarea");
+    console.error(error);
+    alert("Error creating tasks: " + error.message);
   }
 });
 
-// Renderizar tarea
+// Renderizar tarea en el DOM
 function renderTask(task) {
   const taskDiv = document.createElement("div");
   taskDiv.classList.add("task");
@@ -51,12 +58,16 @@ function renderTask(task) {
   deleteBtn.textContent = "X";
   deleteBtn.style.marginLeft = "10px";
 
+  // Eliminar tarea del DOM y backend
   deleteBtn.addEventListener("click", async () => {
+    taskDiv.remove(); // se elimina inmediatamente del DOM
+
     try {
       await deleteTask(task.id);
-      loadTasks();
     } catch (error) {
-      alert("Error al eliminar tarea");
+      console.error(error);
+      alert("Error deleting tasks: " + error.message);
+      renderTask(task); // si falla, la volvemos a mostrar
     }
   });
 

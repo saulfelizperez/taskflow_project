@@ -5,7 +5,8 @@ export async function fetchTasks() {
   const res = await fetch(API);
 
   if (!res.ok) {
-    throw new Error('Error al obtener tareas');
+    const error = await res.json();
+    throw new Error(error.error || 'Error al obtener tareas');
   }
 
   return res.json();
@@ -22,7 +23,8 @@ export async function createTask(title) {
   });
 
   if (!res.ok) {
-    throw new Error('Error al crear tarea');
+    const error = await res.json();
+    throw new Error(error.error || 'Error al crear tarea');
   }
 
   return res.json();
@@ -35,6 +37,25 @@ export async function deleteTask(id) {
   });
 
   if (!res.ok) {
-    throw new Error('Error al eliminar tarea');
+    const error = await res.json();
+    throw new Error(error.error || 'Error al eliminar tarea');
   }
+}
+
+// 🔥 NUEVO (importante)
+export async function updateTask(id, updates) {
+  const res = await fetch(`${API}/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(updates)
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error || 'Error al actualizar tarea');
+  }
+
+  return res.json();
 }
