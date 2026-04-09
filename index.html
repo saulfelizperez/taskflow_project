@@ -137,111 +137,97 @@
         themeButton.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
       });
 
-      // ====== Lista de tareas ======
-      let allTasks = JSON.parse(localStorage.getItem("allTasks")) || {
-        "Trading Basics": [],
-        PsicoTrading: [],
-      };
-      function saveAllTasks() {
-        localStorage.setItem("allTasks", JSON.stringify(allTasks));
+      // ====== Lista de tareas con Backend ======
+      const API = "https://taskflow-project-l1d1.onrender.com/api/v1/tasks";
+
+      let tasks = [];
+
+      async function loadTasks() {
+        const res = await fetch(API);
+        tasks = await res.json();
+        renderTasks();
       }
 
-      function getFilteredTasks(listName) {
-        const search = document
-          .getElementById("searchInput")
-          .value.toLowerCase();
-        const filter = document.getElementById("filterSelect").value;
-        return (allTasks[listName] || []).filter((t) => {
-          const matchText = t.text.toLowerCase().includes(search);
-          let matchFilter = true;
-          if (filter === "pending") matchFilter = !t.completed;
-          if (filter === "completed") matchFilter = t.completed;
-          return matchText && matchFilter;
+      async function createTask(title) {
+        await fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title })
         });
+        loadTasks();
+      }
+
+      async function deleteTask(id) {
+        await fetch(`${API}/${id}`, { method: "DELETE" });
+        loadTasks();
+      }
+
+      async function toggleTask(task) {
+        await fetch(`${API}/${task.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ completed: !task.completed })
+        });
+        loadTasks();
       }
 
       function renderTasks() {
         const container = document.getElementById("listsContainer");
         container.innerHTML = "";
         const currentList = document.getElementById("listaSelect").value;
-        const tasks = getFilteredTasks(currentList);
 
+        // Título de la lista
         const title = document.createElement("h2");
         title.className = "text-xl font-semibold mb-4";
         title.textContent = currentList;
         container.appendChild(title);
 
-        if (tasks.length === 0) {
+        // Filtrado (pending, completed, all)
+        const filter = document.getElementById("filterSelect").value;
+        const filteredTasks = tasks.filter(t => {
+          if (filter === "pending") return !t.completed;
+          if (filter === "completed") return t.completed;
+          return true;
+        });
+
+        if (!filteredTasks.length) {
           const msg = document.createElement("div");
           msg.className = "text-gray-700 dark:text-gray-300 py-6 text-center";
           msg.textContent = "No tasks found.";
           container.appendChild(msg);
-        } else {
-          tasks.forEach((t, i) => {
-            const div = document.createElement("div");
-            div.className =
-              "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg mb-2";
-            div.innerHTML = `<span style="text-decoration:${t.completed ? "line-through" : "none"}">${t.text}</span>
-                         <div class="flex gap-2">
-                           <button class="bg-green-500 text-white px-2 rounded">✔</button>
-                           <button class="bg-yellow-500 text-white px-2 rounded">✏️</button>
-                           <button class="bg-red-500 text-white px-2 rounded">🗑</button>
-                         </div>`;
-            const [btnComplete, btnEdit, btnDelete] =
-              div.querySelectorAll("button");
-            btnComplete.onclick = () => {
-              allTasks[currentList][i].completed =
-                !allTasks[currentList][i].completed;
-              saveAllTasks();
-              renderTasks();
-            };
-            btnEdit.onclick = () => {
-              const nuevo = prompt("Editar:", allTasks[currentList][i].text);
-              if (nuevo) {
-                allTasks[currentList][i].text = nuevo;
-                saveAllTasks();
-                renderTasks();
-              }
-            };
-            btnDelete.onclick = () => {
-              allTasks[currentList].splice(i, 1);
-              saveAllTasks();
-              renderTasks();
-            };
-            container.appendChild(div);
-          });
+          return;
         }
+
+        filteredTasks.forEach((t) => {
+          const div = document.createElement("div");
+          div.className = "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg mb-2";
+          div.innerHTML = `
+            <span style="text-decoration:${t.completed ? "line-through" : "none"}">${t.title}</span>
+            <div class="flex gap-2">
+              <button class="bg-green-500 text-white px-2 rounded">✔</button>
+              <button class="bg-red-500 text-white px-2 rounded">🗑</button>
+            </div>
+          `;
+
+          const [btnToggle, btnDelete] = div.querySelectorAll("button");
+          btnToggle.onclick = () => toggleTask(t);
+          btnDelete.onclick = () => deleteTask(t.id);
+
+          container.appendChild(div);
+        });
       }
 
       document.getElementById("addButton").onclick = () => {
         const input = document.getElementById("taskInput");
-        const text = input.value.trim();
-        if (!text) return;
-        const currentList = document.getElementById("listaSelect").value;
-        allTasks[currentList].push({ text, completed: false });
+        if (!input.value) return;
+        createTask(input.value);
         input.value = "";
-        saveAllTasks();
-        renderTasks();
-      };
-      document.getElementById("searchInput").oninput = renderTasks;
-      document.getElementById("filterSelect").onchange = renderTasks;
-      document.getElementById("listaSelect").onchange = renderTasks;
-      document.getElementById("completeAllBtn").onclick = () => {
-        const currentList = document.getElementById("listaSelect").value;
-        allTasks[currentList].forEach((t) => (t.completed = true));
-        saveAllTasks();
-        renderTasks();
-      };
-      document.getElementById("deleteCompletedBtn").onclick = () => {
-        const currentList = document.getElementById("listaSelect").value;
-        allTasks[currentList] = allTasks[currentList].filter(
-          (t) => !t.completed,
-        );
-        saveAllTasks();
-        renderTasks();
       };
 
-      renderTasks();
+      document.getElementById("filterSelect").onchange = renderTasks;
+      document.getElementById("listaSelect").onchange = renderTasks;
+
+      loadTasks();
     </script>
   </body>
 </html>
