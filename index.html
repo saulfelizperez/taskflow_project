@@ -11,14 +11,14 @@
       tailwind.config = { darkMode: "class" };
     </script>
   </head>
- 
+
   <body
     class="flex flex-col min-h-screen transition-colors duration-300 bg-white dark:bg-slate-900 text-black dark:text-white"
   >
-  <!-- HEADER -->
-  <header class="w-full text-center py-4 bg-white dark:bg-slate-900 shadow">
-    <h1 class="text-4xl md:text-2x1 font-bold">TradingMania</h1>
-  </header>
+    <!-- HEADER -->
+    <header class="w-full text-center py-4 bg-white dark:bg-slate-900 shadow">
+      <h1 class="text-4xl md:text-2x1 font-bold">TradingMania</h1>
+    </header>
     <!-- Contenedor principal -->
     <div class="flex-1 flex p-8 gap-6">
       <!-- Sidebar -->
@@ -152,7 +152,7 @@
         await fetch(API, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title })
+          body: JSON.stringify({ title }),
         });
         loadTasks();
       }
@@ -166,7 +166,7 @@
         await fetch(`${API}/${task.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ completed: !task.completed })
+          body: JSON.stringify({ completed: !task.completed }),
         });
         loadTasks();
       }
@@ -184,7 +184,7 @@
 
         // Filtrado (pending, completed, all)
         const filter = document.getElementById("filterSelect").value;
-        const filteredTasks = tasks.filter(t => {
+        const filteredTasks = tasks.filter((t) => {
           if (filter === "pending") return !t.completed;
           if (filter === "completed") return t.completed;
           return true;
@@ -200,7 +200,8 @@
 
         filteredTasks.forEach((t) => {
           const div = document.createElement("div");
-          div.className = "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg mb-2";
+          div.className =
+            "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg mb-2";
           div.innerHTML = `
             <span style="text-decoration:${t.completed ? "line-through" : "none"}">${t.title}</span>
             <div class="flex gap-2">
