@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trading Knowledge</title>
 
-    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = { darkMode: "class" };
@@ -15,13 +14,11 @@
   <body
     class="flex flex-col min-h-screen transition-colors duration-300 bg-white dark:bg-slate-900 text-black dark:text-white"
   >
-    <!-- HEADER -->
     <header class="w-full text-center py-4 bg-white dark:bg-slate-900 shadow">
       <h1 class="text-4xl md:text-2x1 font-bold">TradingMania</h1>
     </header>
-    <!-- Contenedor principal -->
+
     <div class="flex-1 flex p-8 gap-6">
-      <!-- Sidebar -->
       <aside class="w-64 space-y-6">
         <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
           <h2 class="text-lg font-semibold mb-4">Index</h2>
@@ -42,9 +39,7 @@
         </div>
       </aside>
 
-      <!-- Contenido -->
       <main class="flex-1 space-y-8">
-        <!-- Input y botones -->
         <section
           class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow flex flex-col gap-3"
         >
@@ -54,17 +49,20 @@
             placeholder="Write the next trading idea📊"
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700"
           />
+
           <button
             id="addButton"
             class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg"
           >
             Add up
           </button>
+
           <input
             id="searchInput"
             placeholder="Search..."
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700 mt-4"
           />
+
           <select
             id="filterSelect"
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700 mt-2"
@@ -73,18 +71,21 @@
             <option value="pending">Pending</option>
             <option value="completed">Completed</option>
           </select>
+
           <button
             id="completeAllBtn"
             class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg mt-2"
           >
             Complete All
           </button>
+
           <button
             id="deleteCompletedBtn"
             class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg mt-2"
           >
             Delete Completed
           </button>
+
           <select
             id="listaSelect"
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700 mt-2"
@@ -94,7 +95,6 @@
           </select>
         </section>
 
-        <!-- Lista de tareas -->
         <section
           id="listsContainer"
           class="space-y-4 mt-6 rounded-xl p-6 bg-gray-100 dark:bg-slate-800 shadow min-h-[200px]"
@@ -102,7 +102,6 @@
       </main>
     </div>
 
-    <!-- Footer -->
     <footer
       class="bg-white dark:bg-slate-900 text-center p-4 rounded-xl shadow mt-auto"
     >
@@ -111,15 +110,13 @@
       </p>
     </footer>
 
-    <!-- Botón de cambio de tema -->
     <button
       id="Switch-Mode"
-      class="fixed bottom-6 right-6 z-50 px-4 py-2 bg-gray-300 dark:bg-gray-700 text-black dark:text-white rounded-full shadow-lg hover:scale-105 hover:bg-gray-400 dark:hover:bg-gray-600 active:scale-95 transition-all duration-200 ease-in-out"
+      class="fixed bottom-6 right-6 z-50 px-4 py-2 bg-gray-300 dark:bg-gray-700 text-black dark:text-white rounded-full shadow-lg"
     >
       🌙 Dark Mode
     </button>
 
-    <!-- Script de tareas y tema -->
     <script>
       const html = document.documentElement;
       const themeButton = document.getElementById("Switch-Mode");
@@ -128,6 +125,7 @@
         localStorage.getItem("theme") === "dark" ||
         (!localStorage.getItem("theme") &&
           window.matchMedia("(prefers-color-scheme: dark)").matches);
+
       html.classList.toggle("dark", isDark);
       themeButton.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
 
@@ -137,15 +135,22 @@
         themeButton.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
       });
 
-      // ====== Lista de tareas con Backend ======
       const API = "https://taskflow-project-l1d1.onrender.com/api/v1/tasks";
-
       let tasks = [];
 
       async function loadTasks() {
-        const res = await fetch(API);
-        tasks = await res.json();
-        renderTasks();
+        renderTasks(true); // 👈 loading visible SIEMPRE
+
+        try {
+          const res = await fetch(API);
+          const data = await res.json();
+          tasks = Array.isArray(data) ? data : data.data || [];
+        } catch (error) {
+          console.error("Error:", error);
+          tasks = [];
+        }
+
+        renderTasks(); // 👈 render final
       }
 
       async function createTask(title) {
@@ -171,19 +176,28 @@
         loadTasks();
       }
 
-      function renderTasks() {
+      function renderTasks(loading = false) {
         const container = document.getElementById("listsContainer");
         container.innerHTML = "";
+
         const currentList = document.getElementById("listaSelect").value;
 
-        // Título de la lista
+        // ✅ título SIEMPRE visible
         const title = document.createElement("h2");
         title.className = "text-xl font-semibold mb-4";
         title.textContent = currentList;
         container.appendChild(title);
 
-        // Filtrado (pending, completed, all)
+        if (loading) {
+          const msg = document.createElement("div");
+          msg.className = "text-gray-500 py-6 text-center";
+          msg.textContent = "Loading tasks...";
+          container.appendChild(msg);
+          return;
+        }
+
         const filter = document.getElementById("filterSelect").value;
+
         const filteredTasks = tasks.filter((t) => {
           if (filter === "pending") return !t.completed;
           if (filter === "completed") return t.completed;
@@ -202,6 +216,7 @@
           const div = document.createElement("div");
           div.className =
             "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg mb-2";
+
           div.innerHTML = `
             <span style="text-decoration:${t.completed ? "line-through" : "none"}">${t.title}</span>
             <div class="flex gap-2">
