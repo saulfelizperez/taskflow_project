@@ -1,3 +1,5 @@
+const AppError = require("../utils/appError");
+
 let tasks = []; // "base de datos" en memoria
 
 // Obtener todas las tareas
@@ -8,7 +10,7 @@ function obtenerTodas() {
 // Crear una nueva tarea
 function crearTarea({ title }) {
   if (!title || typeof title !== "string") {
-    throw new Error("TITLE_INVALID");
+    throw new AppError("TITLE_INVALID", 400);
   }
 
   const newTask = {
@@ -26,7 +28,7 @@ function eliminarTarea(id) {
   const exists = tasks.some((task) => task.id === id);
 
   if (!exists) {
-    throw new Error("NOT_FOUND");
+    throw new AppError("NOT_FOUND", 404);
   }
 
   tasks = tasks.filter((task) => task.id !== id);
@@ -37,11 +39,11 @@ function actualizarTarea(id, updates) {
   const index = tasks.findIndex((task) => task.id === id);
 
   if (index === -1) {
-    throw new Error("NOT_FOUND");
+    throw new AppError("NOT_FOUND", 404);
   }
 
   if (!updates || Object.keys(updates).length === 0) {
-    throw new Error("NO_FIELDS_TO_UPDATE");
+    throw new AppError("NO_FIELDS_TO_UPDATE", 400);
   }
 
   const updatedTask = {
