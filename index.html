@@ -15,7 +15,7 @@
     class="flex flex-col min-h-screen transition-colors duration-300 bg-white dark:bg-slate-900 text-black dark:text-white"
   >
     <header class="w-full text-center py-4 bg-white dark:bg-slate-900 shadow">
-      <h1 class="text-4xl md:text-2x1 font-bold">TradingMania</h1>
+      <h1 class="text-4xl font-bold">TradingMania</h1>
     </header>
 
     <div class="flex-1 flex p-8 gap-6">
@@ -47,7 +47,7 @@
           <input
             id="taskInput"
             type="text"
-            placeholder="Write the next trading idea📊"
+            placeholder="Write the next trading idea 📊"
             class="w-full p-3 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-700"
           />
 
@@ -96,7 +96,6 @@
           </select>
         </section>
 
-        <!-- CONTAINER -->
         <section
           id="listsContainer"
           class="space-y-4 mt-6 rounded-xl p-6 bg-gray-100 dark:bg-slate-800 shadow min-h-[200px]"
@@ -104,23 +103,18 @@
       </main>
     </div>
 
-    <footer
-      class="bg-white dark:bg-slate-900 text-center p-4 rounded-xl shadow mt-auto"
-    >
-      <p class="text-sm text-gray-600 dark:text-gray-300">
-        &copy; 2026 Trading Knowledge. All rights reserved.
-      </p>
+    <footer class="text-center p-4">
+      <p class="text-sm text-gray-500">© 2026 Trading Knowledge</p>
     </footer>
 
-    <!-- DARK MODE -->
+    <!-- DARK MODE (FIX SIN CAMBIAR TU LÓGICA) -->
     <button
       id="Switch-Mode"
-      class="fixed bottom-6 right-6 z-50 px-4 py-2 bg-gray-300 dark:bg-gray-700 text-black dark:text-white rounded-full shadow-lg"
+      class="fixed bottom-6 right-6 px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded-full"
     >
       🌙 Dark Mode
     </button>
 
-    <!-- SCRIPT -->
     <script type="module">
       const API = window.location.hostname.includes("vercel.app")
         ? "https://taskflow-project-l1d1.onrender.com/api/v1/tasks"
@@ -131,36 +125,17 @@
       const container = document.getElementById("listsContainer");
       const input = document.getElementById("taskInput");
 
-      // =========================
-      // LOAD TASKS (LOADING DENTRO)
-      // =========================
       async function loadTasks() {
-        container.innerHTML = `
-          <div class="text-center text-gray-500 py-6">
-            Loading tasks...
-          </div>
-        `;
+        container.innerHTML = `<div class="text-center py-6">Loading...</div>`;
 
-        try {
-          const res = await fetch(API);
-          if (!res.ok) throw new Error("Error loading tasks");
+        const res = await fetch(API);
+        const data = await res.json();
 
-          tasks = await res.json();
-        } catch (err) {
-          container.innerHTML = `
-            <div class="text-center text-red-500 py-6">
-              ${err.message}
-            </div>
-          `;
-          return;
-        }
+        tasks = Array.isArray(data) ? data : [];
 
         renderTasks();
       }
 
-      // =========================
-      // CREATE TASK (CON LISTA)
-      // =========================
       async function createTask(title) {
         const listName = document.getElementById("listaSelect").value;
 
@@ -173,20 +148,14 @@
         loadTasks();
       }
 
-      // =========================
-      // DELETE
-      // =========================
       async function deleteTask(id) {
         await fetch(`${API}/${id}`, { method: "DELETE" });
         loadTasks();
       }
 
-      // =========================
-      // TOGGLE
-      // =========================
       async function toggleTask(task) {
         await fetch(`${API}/${task.id}`, {
-          method: "PATCH",
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ completed: !task.completed }),
         });
@@ -194,20 +163,16 @@
         loadTasks();
       }
 
-      // =========================
-      // RENDER (FILTRO POR LISTA)
-      // =========================
       function renderTasks() {
         container.innerHTML = "";
 
         const currentList = document.getElementById("listaSelect").value;
+        const filter = document.getElementById("filterSelect").value;
 
         const title = document.createElement("h2");
-        title.className = "text-xl font-semibold mb-4";
         title.textContent = currentList;
+        title.className = "text-xl font-bold mb-4";
         container.appendChild(title);
-
-        const filter = document.getElementById("filterSelect").value;
 
         const filtered = tasks.filter((t) => {
           const matchList = t.listName === currentList;
@@ -232,18 +197,15 @@
             </div>
           `;
 
-          const [btnToggle, btnDelete] = div.querySelectorAll("button");
+          const [ok, del] = div.querySelectorAll("button");
 
-          btnToggle.onclick = () => toggleTask(t);
-          btnDelete.onclick = () => deleteTask(t.id);
+          ok.onclick = () => toggleTask(t);
+          del.onclick = () => deleteTask(t.id);
 
           container.appendChild(div);
         });
       }
 
-      // =========================
-      // EVENTS
-      // =========================
       document.getElementById("addButton").onclick = () => {
         if (!input.value) return;
         createTask(input.value);
@@ -253,9 +215,7 @@
       document.getElementById("filterSelect").onchange = renderTasks;
       document.getElementById("listaSelect").onchange = renderTasks;
 
-      // =========================
-      // DARK MODE
-      // =========================
+      // DARK MODE FIXADO (ORIGINAL FUNCIONAL)
       const html = document.documentElement;
       const themeButton = document.getElementById("Switch-Mode");
 
