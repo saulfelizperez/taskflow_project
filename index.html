@@ -162,6 +162,18 @@
         loadTasks();
       }
 
+      async function updateTaskTitle(task, newTitle) {
+        if (!newTitle.trim()) return;
+
+        await fetch(`${API}/${task.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: newTitle }),
+        });
+
+        loadTasks();
+      }
+
       function renderTasks() {
         container.innerHTML = "";
 
@@ -188,10 +200,14 @@
             "flex flex-col md:flex-row justify-between gap-2 md:items-center p-4 bg-gray-200 dark:bg-slate-700 rounded-lg";
 
           div.innerHTML = `
-            <span style="text-decoration:${t.completed ? "line-through" : "none"}">
+            <span class="task-title" style="text-decoration:${t.completed ? "line-through" : "none"}">
               ${t.title}
             </span>
+
+            <input class="edit-input hidden w-full md:w-auto p-2 rounded bg-white text-black" />
+
             <div class="flex gap-2">
+              <button class="edit-btn">🖋️</button>
               <button class="complete-btn">✔</button>
               <button class="delete-btn">🗑</button>
             </div>
@@ -199,9 +215,29 @@
 
           const completeBtn = div.querySelector(".complete-btn");
           const deleteBtn = div.querySelector(".delete-btn");
+          const editBtn = div.querySelector(".edit-btn");
+          const titleSpan = div.querySelector(".task-title");
+          const inputEdit = div.querySelector(".edit-input");
 
           completeBtn.onclick = () => toggleTask(t);
           deleteBtn.onclick = () => deleteTask(t.id);
+
+          editBtn.onclick = () => {
+            inputEdit.classList.remove("hidden");
+            titleSpan.classList.add("hidden");
+            inputEdit.value = t.title;
+            inputEdit.focus();
+          };
+
+          inputEdit.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+              updateTaskTitle(t, inputEdit.value);
+            }
+          });
+
+          inputEdit.addEventListener("blur", () => {
+            updateTaskTitle(t, inputEdit.value);
+          });
 
           container.appendChild(div);
         });
