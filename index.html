@@ -29,6 +29,7 @@
             <li>IBEX 35</li>
           </ul>
         </div>
+
         <div class="bg-gray-100 dark:bg-slate-800 rounded-xl p-6 shadow">
           <h2 class="text-lg font-semibold mb-4">Trading Tools</h2>
           <ul class="space-y-2 text-gray-600 dark:text-gray-300">
@@ -95,6 +96,7 @@
           </select>
         </section>
 
+        <!-- CONTAINER -->
         <section
           id="listsContainer"
           class="space-y-4 mt-6 rounded-xl p-6 bg-gray-100 dark:bg-slate-800 shadow min-h-[200px]"
@@ -110,6 +112,7 @@
       </p>
     </footer>
 
+    <!-- DARK MODE -->
     <button
       id="Switch-Mode"
       class="fixed bottom-6 right-6 z-50 px-4 py-2 bg-gray-300 dark:bg-gray-700 text-black dark:text-white rounded-full shadow-lg"
@@ -117,7 +120,142 @@
       🌙 Dark Mode
     </button>
 
-    <script>
+    <!-- SCRIPT -->
+    <script type="module">
+      const API = window.location.hostname.includes("vercel.app")
+        ? "https://taskflow-project-l1d1.onrender.com/api/v1/tasks"
+        : "/api/v1/tasks";
+
+      let tasks = [];
+
+      const container = document.getElementById("listsContainer");
+      const input = document.getElementById("taskInput");
+
+      // =========================
+      // LOAD TASKS (LOADING DENTRO)
+      // =========================
+      async function loadTasks() {
+        container.innerHTML = `
+          <div class="text-center text-gray-500 py-6">
+            Loading tasks...
+          </div>
+        `;
+
+        try {
+          const res = await fetch(API);
+          if (!res.ok) throw new Error("Error loading tasks");
+
+          tasks = await res.json();
+        } catch (err) {
+          container.innerHTML = `
+            <div class="text-center text-red-500 py-6">
+              ${err.message}
+            </div>
+          `;
+          return;
+        }
+
+        renderTasks();
+      }
+
+      // =========================
+      // CREATE TASK (CON LISTA)
+      // =========================
+      async function createTask(title) {
+        const listName = document.getElementById("listaSelect").value;
+
+        await fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, listName }),
+        });
+
+        loadTasks();
+      }
+
+      // =========================
+      // DELETE
+      // =========================
+      async function deleteTask(id) {
+        await fetch(`${API}/${id}`, { method: "DELETE" });
+        loadTasks();
+      }
+
+      // =========================
+      // TOGGLE
+      // =========================
+      async function toggleTask(task) {
+        await fetch(`${API}/${task.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ completed: !task.completed }),
+        });
+
+        loadTasks();
+      }
+
+      // =========================
+      // RENDER (FILTRO POR LISTA)
+      // =========================
+      function renderTasks() {
+        container.innerHTML = "";
+
+        const currentList = document.getElementById("listaSelect").value;
+
+        const title = document.createElement("h2");
+        title.className = "text-xl font-semibold mb-4";
+        title.textContent = currentList;
+        container.appendChild(title);
+
+        const filter = document.getElementById("filterSelect").value;
+
+        const filtered = tasks.filter((t) => {
+          const matchList = t.listName === currentList;
+
+          if (filter === "pending") return !t.completed && matchList;
+          if (filter === "completed") return t.completed && matchList;
+          return matchList;
+        });
+
+        filtered.forEach((t) => {
+          const div = document.createElement("div");
+          div.className =
+            "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg";
+
+          div.innerHTML = `
+            <span style="text-decoration:${t.completed ? "line-through" : "none"}">
+              ${t.title}
+            </span>
+            <div class="flex gap-2">
+              <button>✔</button>
+              <button>🗑</button>
+            </div>
+          `;
+
+          const [btnToggle, btnDelete] = div.querySelectorAll("button");
+
+          btnToggle.onclick = () => toggleTask(t);
+          btnDelete.onclick = () => deleteTask(t.id);
+
+          container.appendChild(div);
+        });
+      }
+
+      // =========================
+      // EVENTS
+      // =========================
+      document.getElementById("addButton").onclick = () => {
+        if (!input.value) return;
+        createTask(input.value);
+        input.value = "";
+      };
+
+      document.getElementById("filterSelect").onchange = renderTasks;
+      document.getElementById("listaSelect").onchange = renderTasks;
+
+      // =========================
+      // DARK MODE
+      // =========================
       const html = document.documentElement;
       const themeButton = document.getElementById("Switch-Mode");
 
@@ -134,114 +272,6 @@
         localStorage.setItem("theme", isDark ? "dark" : "light");
         themeButton.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
       });
-
-      const API = "https://taskflow-project-l1d1.onrender.com/api/v1/tasks";
-      let tasks = [];
-
-      async function loadTasks() {
-        renderTasks(true); // 👈 loading visible SIEMPRE
-
-        try {
-          const res = await fetch(API);
-          const data = await res.json();
-          tasks = Array.isArray(data) ? data : data.data || [];
-        } catch (error) {
-          console.error("Error:", error);
-          tasks = [];
-        }
-
-        renderTasks(); // 👈 render final
-      }
-
-      async function createTask(title) {
-        await fetch(API, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title }),
-        });
-        loadTasks();
-      }
-
-      async function deleteTask(id) {
-        await fetch(`${API}/${id}`, { method: "DELETE" });
-        loadTasks();
-      }
-
-      async function toggleTask(task) {
-        await fetch(`${API}/${task.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ completed: !task.completed }),
-        });
-        loadTasks();
-      }
-
-      function renderTasks(loading = false) {
-        const container = document.getElementById("listsContainer");
-        container.innerHTML = "";
-
-        const currentList = document.getElementById("listaSelect").value;
-
-        // ✅ título SIEMPRE visible
-        const title = document.createElement("h2");
-        title.className = "text-xl font-semibold mb-4";
-        title.textContent = currentList;
-        container.appendChild(title);
-
-        if (loading) {
-          const msg = document.createElement("div");
-          msg.className = "text-gray-500 py-6 text-center";
-          msg.textContent = "Loading tasks...";
-          container.appendChild(msg);
-          return;
-        }
-
-        const filter = document.getElementById("filterSelect").value;
-
-        const filteredTasks = tasks.filter((t) => {
-          if (filter === "pending") return !t.completed;
-          if (filter === "completed") return t.completed;
-          return true;
-        });
-
-        if (!filteredTasks.length) {
-          const msg = document.createElement("div");
-          msg.className = "text-gray-700 dark:text-gray-300 py-6 text-center";
-          msg.textContent = "No tasks found.";
-          container.appendChild(msg);
-          return;
-        }
-
-        filteredTasks.forEach((t) => {
-          const div = document.createElement("div");
-          div.className =
-            "flex justify-between p-4 bg-gray-200 dark:bg-slate-700 rounded-lg mb-2";
-
-          div.innerHTML = `
-            <span style="text-decoration:${t.completed ? "line-through" : "none"}">${t.title}</span>
-            <div class="flex gap-2">
-              <button class="bg-green-500 text-white px-2 rounded">✔</button>
-              <button class="bg-red-500 text-white px-2 rounded">🗑</button>
-            </div>
-          `;
-
-          const [btnToggle, btnDelete] = div.querySelectorAll("button");
-          btnToggle.onclick = () => toggleTask(t);
-          btnDelete.onclick = () => deleteTask(t.id);
-
-          container.appendChild(div);
-        });
-      }
-
-      document.getElementById("addButton").onclick = () => {
-        const input = document.getElementById("taskInput");
-        if (!input.value) return;
-        createTask(input.value);
-        input.value = "";
-      };
-
-      document.getElementById("filterSelect").onchange = renderTasks;
-      document.getElementById("listaSelect").onchange = renderTasks;
 
       loadTasks();
     </script>

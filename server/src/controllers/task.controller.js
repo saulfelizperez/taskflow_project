@@ -1,76 +1,45 @@
 const service = require("../services/task.service");
 
 // GET
-function getTasks(req, res, next) {
-  try {
-    const tasks = service.obtenerTodas();
-    res.status(200).json(tasks);
-  } catch (err) {
-    next(err);
-  }
+function getTasks(req, res) {
+  const tasks = service.obtenerTodas();
+  res.json(tasks);
 }
 
 // POST
-function postTask(req, res, next) {
-  try {
-    if (!req.body.title || typeof req.body.title !== "string") {
-      return res.status(400).json({
-        error: "TITLE_INVALID",
-      });
-    }
+function createTask(req, res) {
+  const { title } = req.body;
 
-    const task = service.crearTarea(req.body);
-    res.status(201).json(task);
-  } catch (err) {
-    next(err);
+  if (!title) {
+    return res.status(400).json({ error: "El título es obligatorio" });
   }
+
+  const task = service.crearTarea({ title });
+
+  return res.status(201).json(task);
 }
 
 // DELETE
-function deleteTask(req, res, next) {
-  try {
-    const { id } = req.params;
+function deleteTask(req, res) {
+  const { id } = req.params;
 
-    if (!id) {
-      return res.status(400).json({
-        error: "ID_REQUIRED",
-      });
-    }
+  service.eliminarTarea(id);
 
-    service.eliminarTarea(id);
-    res.status(204).send();
-  } catch (err) {
-    next(err);
-  }
+  return res.sendStatus(204);
 }
 
-// PUT
-function putTask(req, res, next) {
-  try {
-    const { id } = req.params;
+// PATCH
+function updateTask(req, res) {
+  const { id } = req.params;
 
-    if (!id) {
-      return res.status(400).json({
-        error: "ID_REQUIRED",
-      });
-    }
+  const task = service.actualizarTarea(id, req.body);
 
-    if (!req.body || Object.keys(req.body).length === 0) {
-      return res.status(400).json({
-        error: "NO_FIELDS_TO_UPDATE",
-      });
-    }
-
-    const updatedTask = service.actualizarTarea(id, req.body);
-    res.status(200).json(updatedTask);
-  } catch (err) {
-    next(err);
-  }
+  return res.json(task);
 }
 
 module.exports = {
   getTasks,
-  postTask,
+  createTask,
   deleteTask,
-  putTask,
+  updateTask,
 };

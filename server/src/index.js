@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -24,13 +26,13 @@ app.use("/api/v1/tasks", taskRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // 404 API
-app.use("/api", (req, res) => {
+app.use((req, res) => {
   res.status(404).json({ error: "Ruta no encontrada" });
 });
 
-// 🔥 ERROR HANDLER PRO
+// ERROR HANDLER
 app.use((err, req, res, next) => {
-  console.error("🔥 ERROR:", err);
+  console.error(" ERROR:", err);
 
   const statusCode = err.statusCode || 500;
 

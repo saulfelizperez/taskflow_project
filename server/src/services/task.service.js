@@ -1,13 +1,13 @@
 const AppError = require("../utils/appError");
 
-let tasks = []; // "base de datos" en memoria
+let tasks = [];
 
-// Obtener todas las tareas
+// Obtener todas
 function obtenerTodas() {
   return tasks;
 }
 
-// Crear una nueva tarea
+// Crear tarea
 function crearTarea({ title }) {
   if (!title || typeof title !== "string") {
     throw new AppError("TITLE_INVALID", 400);
@@ -23,7 +23,7 @@ function crearTarea({ title }) {
   return newTask;
 }
 
-// Eliminar una tarea
+// Eliminar tarea
 function eliminarTarea(id) {
   const exists = tasks.some((task) => task.id === id);
 
@@ -34,7 +34,7 @@ function eliminarTarea(id) {
   tasks = tasks.filter((task) => task.id !== id);
 }
 
-// Actualizar una tarea
+// Actualizar tarea
 function actualizarTarea(id, updates) {
   const index = tasks.findIndex((task) => task.id === id);
 
@@ -46,13 +46,12 @@ function actualizarTarea(id, updates) {
     throw new AppError("NO_FIELDS_TO_UPDATE", 400);
   }
 
-  const updatedTask = {
+  tasks[index] = {
     ...tasks[index],
     ...updates,
   };
 
-  tasks[index] = updatedTask;
-  return updatedTask;
+  return tasks[index];
 }
 
 module.exports = {

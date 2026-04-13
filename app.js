@@ -1,31 +1,37 @@
-// frontend/app.js
 
 // Detecta si estamos en producción (Vercel) o local
 const API = window.location.hostname.includes('vercel.app')
-  ? 'https://taskflow-project-l1d1.onrender.com/api/v1/tasks' // backend en Render
-  : '/api/v1/tasks'; // proxy local
+  ? 'https://taskflow-project-l1d1.onrender.com/api/v1/tasks'
+  : '/api/v1/tasks';
 
-// Arreglo de tareas inicializado
+// Estado global de tareas
 let tasks = [];
 
-// Obtener todas las tareas
+// =========================
+// GET TASKS
+// =========================
 export async function fetchTasks() {
   try {
     const res = await fetch(API);
+
     if (!res.ok) {
       const error = await res.json();
       throw new Error(error.error || 'Error al obtener tareas');
     }
-    tasks = await res.json(); // actualiza el arreglo global
+
+    tasks = await res.json();
     return tasks;
+
   } catch (err) {
     console.error("Error fetchTasks:", err);
-    alert("No se pudo obtener las tareas. Revisa la consola.");
+    alert("No se pudo obtener las tareas.");
     throw err;
   }
 }
 
-// Crear una nueva tarea
+// =========================
+// CREATE TASK
+// =========================
 export async function createTask(title) {
   try {
     const res = await fetch(API, {
@@ -33,61 +39,85 @@ export async function createTask(title) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title })
     });
+
     if (!res.ok) {
       const error = await res.json();
       throw new Error(error.error || 'Error al crear tarea');
     }
+
     const newTask = await res.json();
-    tasks.push(newTask); // agrega la nueva tarea al arreglo
+    tasks.push(newTask);
+
     return newTask;
+
   } catch (err) {
     console.error("Error createTask:", err);
-    alert("No se pudo crear la tarea. Revisa la consola.");
+    alert("No se pudo crear la tarea.");
     throw err;
   }
 }
 
-// Eliminar una tarea
+// =========================
+// DELETE TASK
+// =========================
 export async function deleteTask(id) {
   try {
-    const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
+    const res = await fetch(`${API}/${id}`, {
+      method: 'DELETE'
+    });
+
     if (!res.ok) {
       const error = await res.json();
       throw new Error(error.error || 'Error al eliminar tarea');
     }
-    tasks = tasks.filter(task => task.id !== id); // actualiza arreglo
+
+    tasks = tasks.filter(task => task.id !== id);
+
+    return true;
+
   } catch (err) {
     console.error("Error deleteTask:", err);
-    alert("No se pudo eliminar la tarea. Revisa la consola.");
+    alert("No se pudo eliminar la tarea.");
     throw err;
   }
 }
 
-// Actualizar tarea
+// =========================
+// UPDATE TASK
+// =========================
 export async function updateTask(id, updates) {
   try {
     const res = await fetch(`${API}/${id}`, {
-      method: 'PUT',
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates)
     });
+
     if (!res.ok) {
       const error = await res.json();
       throw new Error(error.error || 'Error al actualizar tarea');
     }
+
     const updatedTask = await res.json();
-    tasks = tasks.map(task => task.id === id ? updatedTask : task); // actualiza arreglo
+
+    tasks = tasks.map(task =>
+      task.id === id ? updatedTask : task
+    );
+
     return updatedTask;
+
   } catch (err) {
     console.error("Error updateTask:", err);
-    alert("No se pudo actualizar la tarea. Revisa la consola.");
+    alert("No se pudo actualizar la tarea.");
     throw err;
   }
 }
 
-// Función opcional para renderizar tareas en tu UI (si quieres)
-export function renderTasks(renderCallback) {
-  if (typeof renderCallback === 'function') {
-    renderCallback(tasks);
+// =========================
+// RENDER (opcional UI)
+// =========================
+export function renderTasks(callback) {
+  if (typeof callback === 'function') {
+    callback(tasks);
   }
 }
