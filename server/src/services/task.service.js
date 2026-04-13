@@ -8,7 +8,7 @@ function obtenerTodas() {
 }
 
 // Crear tarea
-function crearTarea({ title }) {
+function crearTarea({ title, listName }) {
   if (!title || typeof title !== "string") {
     throw new AppError("TITLE_INVALID", 400);
   }
@@ -17,6 +17,7 @@ function crearTarea({ title }) {
     id: Date.now().toString(),
     title,
     completed: false,
+    listName: listName || "📈Trading Basics📉", // importante
   };
 
   tasks.push(newTask);

@@ -8,13 +8,13 @@ function getTasks(req, res) {
 
 // POST
 function createTask(req, res) {
-  const { title } = req.body;
+  const { title, listName } = req.body;
 
   if (!title) {
     return res.status(400).json({ error: "El título es obligatorio" });
   }
 
-  const task = service.crearTarea({ title });
+  const task = service.crearTarea({ title, listName });
 
   return res.status(201).json(task);
 }
@@ -28,7 +28,7 @@ function deleteTask(req, res) {
   return res.sendStatus(204);
 }
 
-// PATCH
+// PATCH / PUT
 function updateTask(req, res) {
   const { id } = req.params;
 
