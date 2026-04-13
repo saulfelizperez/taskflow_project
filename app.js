@@ -87,7 +87,7 @@ export async function deleteTask(id) {
 export async function updateTask(id, updates) {
   try {
     const res = await fetch(`${API}/${id}`, {
-      method: "PUT", // FIX: PATCH → PUT
+      method: "PATCH", 
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updates),
     });
