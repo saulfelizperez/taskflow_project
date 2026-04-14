@@ -1,56 +1,141 @@
-# Trading Website
+# 📌 TaskFlow
 
-Small practice project developed in DAM to experiment with a trading–themed interface, dark mode, and basic task management in the browser.
-
----
-
-## 🛠 Technologies Used
-
-- **HTML** – Structure and layout of the single–page app.
-- **Tailwind CSS** – Styling and responsive design (`src/styles.css` → `dist/styles.css`).
-- **JavaScript (vanilla)** – Dark mode toggle and a simple task system with `localStorage`.
+TaskFlow es una aplicación full-stack de gestión de tareas que permite crear, editar, eliminar y visualizar tareas mediante una API REST y un frontend conectado.
 
 ---
 
-## ✨ Features
+## Documentación del proyecto
 
-### Trading Dashboard Layout
+- [Doc del Backend](./docs/categorias/bnd&Fnd/README_backend.md)
+- [Doc del Frontend](./docs/categorias/bnd&Fnd/README_frontend.md)
+- [Doc de pruebas generales](./docs/categorias/bnd&Fnd/pruebas_generales.md)
 
-- Sidebar with indices and tools (NAS100, SP500, DOW JONES, IBEX 35).
-- Main content area for tasks, topics, and psicotrading tips.
+## Stack tecnológico
 
-### Task / Topic Management
-
-- Add new tasks/items from the input (“Write a new index”).
-- Persist tasks in `localStorage` so they survive page reloads.
-- Delete individual tasks with a button and confirmation.
-- Edit task titles directly in the interface.
-- Filter tasks by **all / pending / completed**.
-- Search tasks by text.
-- Complete all tasks with a single button.
-- Delete all completed tasks (recently added feature).
-
-### Dark Mode
-
-- Automatic detection of system preference.
-- Manual toggle via floating button.
-- Smooth transition between light and dark themes.
+- Node.js + Express
+- HTML, CSS, JavaScript (Vanilla)
+- Swagger (API documentation)
 
 ---
 
-## 🚀 Getting Started
+## Estructura del proyecto
 
-### Requirements
+-TaskFlow
+server/
+frontend/
 
-- **Node.js**
-- **npm** (comes with Node)
+README.md
 
-### Installation
+---
+
+## Ejecución del proyecto
+
+### Backend
+
+- [Doc del Backend](./docs/categorias/bnd&Fnd/README_backend.md)
+
+- cd server
+- npm install
+- npm run dev
+
+### Frontend
+
+- [Doc del Frontend](./docs/categorias/bnd&Fnd/README_frontend.md)
+
+- Abrir:
+
+frontend/index.html
+
+--- API
+http://localhost:3000/api/v1
+
+--- Swagger
+http://localhost:3000/api-docs
 
 ```bash
-    npm install
+
+--- Funcionalidades
+
+- Crear tareas
+- Listar tareas
+- Editar tareas
+- Eliminar tareas
+- Variedad de listas
+- API REST estructurada
+- Arquitectura modular
+- Documentación Swagger
+- Frontend dinámico sin recarga
+- Separación frontend/backend
+- Preferencia entre Modo Oscuro/Modo Claro
+
+--- Futuras mejoras
+
+- Filtro de tareas
+- Test automaticos
+
+
+------  Autor
+
+- Desarrollado como Proyecto full-stack de practica
+
+--- Explicacion de los middlewares
+
+
+-- Middleware CORS (1) --
+
+*app.use(cors());*
+
+- Es un middleware que se encarga de gestionar las restricciones de origen entre cliente y servidor.
+
+- En la práctica, configura las reglas que permiten que tu backend pueda recibir   peticiones desde otros dominios o puertos distintos al suyo.
+
+- Básicamente, añade automáticamente cabeceras HTTP que controlan qué orígenes están autorizados a acceder a la API.
+
+
+-- Middleware de parsing (2) --
+
+*app.use(express.json());*
+
+- Este middleware se encarga de leer el cuerpo de las peticiones HTTP y convertirlo de JSON a objeto JavaScript.
+
+- Cuando el cliente envía datos en formato JSON, este middleware los interpreta y los deja disponibles en req.body.
+
+- Sin él, el servidor no podría entender los datos enviados en el body.
+
+
+-- Middleware 404 → Route fallback (3) --
+
+*app.use((req, res) => {
+  res.status(404).json({ error: "Ruta no encontrada" });
+});*
+
+- Este middleware funciona como un controlador de respaldo para rutas inexistentes.
+
+- Se ejecuta únicamente cuando ninguna de las rutas definidas anteriormente coincide con la petición.
+
+- En ese caso, responde con un error 404 indicando que el endpoint no existe.
+
+
+-- Middleware de errores → Error handler (4) --
+
+*app.use((err, req, res, next) => {*
+
+- Este es un middleware especializado en capturar y gestionar errores dentro del flujo de la aplicación.
+
+- Cuando ocurre un error en cualquier parte del backend y se lanza con throw o next(err), este middleware lo intercepta.
+
+- Su función es transformar esos errores en respuestas HTTP estructuradas, normalmente con un código de estado adecuado y un mensaje legible.
+
+- También actúa como un punto central donde se unifican todos los errores del sistema.
 
 ```
-### Project usage
+--- Ejemplos de interaccion con la API REST
 
- People who already are verified can add different tasks about good trading practices
+- [Doc de pruebas generales](./docs/categorias/bnd&Fnd/pruebas_generales.md)
+
+*Deploy*
+
+<a href: "https://taskflowproject-blue.vercel.app/"> Enlace para entrar al proyecto <a>
+
+
+
