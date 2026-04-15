@@ -129,13 +129,11 @@ http://localhost:3000/api-docs
 - También actúa como un punto central donde se unifican todos los errores del sistema.
 
 ```
+
 --- Ejemplos de interaccion con la API REST
 
 - [Doc de pruebas generales](./docs/categorias/bnd&Fnd/pruebas_generales.md)
 
-*Deploy*
+_Deploy_
 
-<a href: "https://taskflowproject-blue.vercel.app/"> Enlace para entrar al proyecto <a>
-
-
-
+<a href: "https://taskflowproject-blue.vercel.app" > Enlace para entrar al proyecto <a>
